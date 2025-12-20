@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="text-right">
+    <p-button label="Add" icon="pi pi-plus" (click)="selectedTypeId = null; isShowDetail = true" />
+  </div>
+  <div class="pt-2">
+    <p-table [value]="types" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th style="width:220px">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-type>
+        <tr>
+          <td>{{ type.id }}</td>
+          <td>{{ type.name }}</td>
+          <td>{{ type.description }}</td>
+          <td>
+          <span
+            [ngStyle]="{ 'background-color': type.active ? '#28a745' : '#6c757d', color: '#fff', display: 'inline-block', padding: '.25rem .5rem', 'border-radius': '.25rem' }">{{ type.active ? 'Active' : 'Inactive' }}</span>
+          </td>
+          <td>
+            <p-button type="button" icon="pi pi-pencil" [rounded]="true" [text]="true"
+                      (click)="selectedTypeId = type.id; isShowDetail = true"></p-button>
+            <p-button type="button" [icon]="type.active ? 'pi pi-ban' : 'pi pi-check'" [rounded]="true" [text]="true"
+                      (click)="updateStatus(type)"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">No data available</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<app-side-drawer [visible]="isShowDetail" (close)="isShowDetail = false" [title]="selectedTypeId ? 'Detail' : 'Add'"
+                 (save)="ingredientTypeDetail.save()">
+  <app-ingredient-type-detail #ingredientTypeDetail [id]="selectedTypeId"
+                              (onSaved)="isShowDetail = false; getAllTypes()"></app-ingredient-type-detail>
+</app-side-drawer>
