@@ -1,13 +1,13 @@
 export class IngredientTypeModel {
   id: number;
-  name: string;
+  name: any;
   isActive: boolean;
-  description: string;
+  description: any;
 
   constructor() {
     this.id = 0;
-    this.name = '';
-    this.description = '';
+    this.name = {};
+    this.description = {};
     this.isActive = true;
   }
 }

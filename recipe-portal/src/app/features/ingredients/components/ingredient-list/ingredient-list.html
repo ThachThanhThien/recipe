@@ -9,6 +9,7 @@
           <th>#</th>
           <th>Name</th>
           <th>Type</th>
+          <th>Unit</th>
           <th>Description</th>
           <th>Status</th>
           <th style="width:220px">Actions</th>
@@ -19,32 +20,33 @@
         <tr>
           <td>{{ ing.id }}</td>
           <td>{{ ing.name }}</td>
-          <td>{{ ing.ingredientTypeName || '-' }}</td>
+          <td>{{ getTypeNames(ing) }}</td>
+          <td>{{ ing.unit }}</td>
           <td>{{ ing.description }}</td>
           <td>
-            <span
-              [ngStyle]="{ 'background-color': ing.isActive ? '#28a745' : '#6c757d', color: '#fff', display: 'inline-block', padding: '.25rem .5rem', 'border-radius': '.25rem' }">{{ ing.isActive ? 'Active' : 'Inactive' }}</span>
+            <p-tag [severity]="ing.isActive ? 'success' : 'danger'" [value]="ing.isActive ? 'Active' : 'Inactive'" />
           </td>
           <td>
             <p-button type="button" icon="pi pi-pencil" [rounded]="true" [text]="true"
-                      (click)="selectedIngredientId = ing.id; isShowDetail = true"></p-button>
-            <p-button type="button" [icon]="ing.isActive ? 'pi pi-ban' : 'pi pi-check'" [rounded]="true" [text]="true"
-                      (click)="updateStatus(ing)"></p-button>
+              (click)="selectedIngredientId = ing.id; isShowDetail = true" pTooltip="Edit"></p-button>
+            <p-button type="button" [icon]="ing.isActive ? 'pi pi-times' : 'pi pi-check'" [rounded]="true" [text]="true"
+              [severity]="ing.isActive ? 'danger' : 'success'" (click)="updateStatus(ing)"
+              [pTooltip]="ing.isActive ? 'Deactivate' : 'Activate'"></p-button>
           </td>
         </tr>
       </ng-template>
 
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6">No data available</td>
+          <td colspan="7">No data available</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
 </div>
 
-<app-side-drawer [visible]="isShowDetail" (close)="isShowDetail = false" [title]="selectedIngredientId ? 'Detail' : 'Add'"
-                 (save)="ingredientDetail.save()">
+<app-side-drawer [visible]="isShowDetail" (close)="isShowDetail = false"
+  [title]="selectedIngredientId ? 'Detail' : 'Add'" (save)="ingredientDetail.save()">
   <app-ingredient-detail #ingredientDetail [id]="selectedIngredientId"
-                         (onSaved)="isShowDetail = false; getAllIngredients()"></app-ingredient-detail>
+    (onSaved)="isShowDetail = false; getAllIngredients()"></app-ingredient-detail>
 </app-side-drawer>

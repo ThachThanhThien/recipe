@@ -20,14 +20,14 @@
           <td>{{ type.name }}</td>
           <td>{{ type.description }}</td>
           <td>
-          <span
-            [ngStyle]="{ 'background-color': type.active ? '#28a745' : '#6c757d', color: '#fff', display: 'inline-block', padding: '.25rem .5rem', 'border-radius': '.25rem' }">{{ type.active ? 'Active' : 'Inactive' }}</span>
+            <p-tag [severity]="type.isActive ? 'success' : 'danger'" [value]="type.isActive ? 'Active' : 'Inactive'" />
           </td>
           <td>
             <p-button type="button" icon="pi pi-pencil" [rounded]="true" [text]="true"
-                      (click)="selectedTypeId = type.id; isShowDetail = true"></p-button>
-            <p-button type="button" [icon]="type.active ? 'pi pi-ban' : 'pi pi-check'" [rounded]="true" [text]="true"
-                      (click)="updateStatus(type)"></p-button>
+                      (click)="selectedTypeId = type.id; isShowDetail = true" pTooltip="Edit"></p-button>
+            <p-button type="button" [icon]="type.isActive ? 'pi pi-times' : 'pi pi-check'" [rounded]="true" [text]="true"
+                      [severity]="type.isActive ? 'danger' : 'success'" (click)="updateStatus(type)"
+                      [pTooltip]="type.isActive ? 'Deactivate' : 'Activate'"></p-button>
           </td>
         </tr>
       </ng-template>

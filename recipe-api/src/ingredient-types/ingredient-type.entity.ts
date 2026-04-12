@@ -1,20 +1,21 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Ingredient } from '../ingredient/ingredient.entity';
+import type { Multilingual } from '../common/interfaces/multilingual.interface';
 
 @Entity()
 export class IngredientType {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ type: 'simple-json', nullable: true })
+  name: Multilingual;
 
-  @OneToMany(() => Ingredient, (ingredient) => ingredient.type)
+  @ManyToMany(() => Ingredient, (ingredient) => ingredient.types)
   ingredients: Ingredient[];
 
-  @Column({ nullable: true })
-  description: string;
+  @Column({ type: 'simple-json', nullable: true })
+  description?: Multilingual;
 
-  @Column(({ nullable: true }))
+  @Column({ default: true })
   isActive: boolean;
 }

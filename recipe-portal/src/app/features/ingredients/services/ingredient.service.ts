@@ -15,11 +15,15 @@ export class IngredientService extends ApiBaseService {
   }
 
   create(payload: IngredientModel) {
-    return this.http.post(this.buildUrl('ingredient'), payload);
+    return this.http.post<IngredientModel>(this.buildUrl('ingredient'), payload);
   }
 
   update(id: number, payload: IngredientModel) {
-    return this.http.put(this.buildUrl(`ingredient/${id}`), payload);
+    return this.http.put<IngredientModel>(this.buildUrl(`ingredient/${id}`), payload);
+  }
+
+  toggleActive(id: number, isActive: boolean) {
+    return this.http.patch<IngredientModel>(this.buildUrl(`ingredient/${id}/active`), { isActive });
   }
 
   delete(id: number) {

@@ -1,29 +1,5 @@
-<form [formGroup]="form" class="flex flex-col gap-4 w-full">
-  <div class="flex flex-col gap-2">
-    <label for="name" class="required-field">Name</label>
-    <input
-      id="name"
-      pInputText
-      formControlName="name"
-      [invalid]="isInvalid(form, 'name')" />
+<form [formGroup]="form" class="flex flex-col gap-2 w-full">
+  <app-multilingual-input formControlName="name" label="Name" [required]="true"></app-multilingual-input>
 
-    @if (isInvalid(form, 'name')) {
-      <p-message
-        severity="error"
-        size="small"
-        variant="simple">
-        Name is required
-      </p-message>
-    }
-  </div>
-
-  <div class="flex flex-col gap-2">
-    <label for="description">Description</label>
-    <textarea
-      id="description"
-      rows="4"
-      pTextarea
-      formControlName="description">
-    </textarea>
-  </div>
+  <app-multilingual-input formControlName="description" label="Description" type="textarea"></app-multilingual-input>
 </form>

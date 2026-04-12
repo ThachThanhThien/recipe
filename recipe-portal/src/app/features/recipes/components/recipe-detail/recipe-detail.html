@@ -1,0 +1,51 @@
+<form [formGroup]="form" class="flex flex-col gap-2 w-full">
+  <app-multilingual-input 
+    formControlName="title" 
+    label="Title" 
+    [required]="true"
+  ></app-multilingual-input>
+
+  <app-multilingual-input 
+    formControlName="description" 
+    label="Description" 
+    type="textarea"
+  ></app-multilingual-input>
+
+  <app-multilingual-input 
+    formControlName="instructions" 
+    label="Instructions" 
+    type="editor"
+  ></app-multilingual-input>
+
+  <div class="flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <label class="required-field">Ingredients</label>
+      <p-button type="button" label="Add" icon="pi pi-plus" [text]="true" size="small"
+        (click)="addIngredient()"></p-button>
+    </div>
+
+    <div formArrayName="ingredients" class="flex flex-col gap-3">
+      @for (ctrl of ingredientsArray.controls; track ctrl; let i = $index) {
+      <div [formGroupName]="i" class="flex items-start gap-2">
+        <div class="flex-1 flex flex-col gap-1">
+          <p-select [options]="availableIngredients" optionLabel="displayName" optionValue="id"
+            formControlName="ingredientId" placeholder="Select ingredient" [fluid]="true"
+            [invalid]="ctrl.get('ingredientId')?.invalid && formSubmitted"></p-select>
+        </div>
+        <div class="w-32 flex flex-col gap-1">
+          <input pInputText formControlName="quantity" placeholder="Qty"
+            [invalid]="ctrl.get('quantity')?.invalid && formSubmitted" />
+        </div>
+        <p-button type="button" icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+          (click)="removeIngredient(i)"></p-button>
+      </div>
+      }
+    </div>
+
+    @if (ingredientsArray.length === 0 && formSubmitted) {
+    <p-message severity="error" size="small" variant="simple">
+      At least one ingredient is required
+    </p-message>
+    }
+  </div>
+</form>

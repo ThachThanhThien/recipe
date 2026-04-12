@@ -31,6 +31,12 @@ export class AppMenu {
           { label: 'Ingredient Type', icon: 'pi pi-fw pi-id-card', routerLink: ['/ingredient-types'] },
           { label: 'Ingredient', icon: 'pi pi-fw pi-id-card', routerLink: ['/ingredients'] },
         ]
+      },
+      {
+        label: 'Recipes',
+        items: [
+          { label: 'Recipe', icon: 'pi pi-fw pi-book', routerLink: ['/recipes'] },
+        ]
       }
     ];
   }

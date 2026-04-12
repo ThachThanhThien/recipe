@@ -4,8 +4,10 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { MessageModule } from 'primeng/message';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AppComponentBase } from '../../../../core/component/app-component-base';
 import { IngredientTypeService } from '../../services/ingredient-type.service';
+import { MultilingualInput } from '../../../../shared/components/multilingual-input/multilingual-input';
 
 @Component({
   selector: 'app-ingredient-type-detail',
@@ -15,7 +17,9 @@ import { IngredientTypeService } from '../../services/ingredient-type.service';
     ButtonModule,
     InputTextModule,
     TextareaModule,
-    MessageModule
+    MessageModule,
+    ToggleSwitchModule,
+    MultilingualInput
   ],
   templateUrl: './ingredient-type-detail.html'
 })
@@ -29,13 +33,19 @@ export class IngredientTypeDetail extends AppComponentBase implements OnChanges 
   constructor() {
     super();
 
+    this.initForm();
+  }
+
+  private initForm(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: ['']
+      name: [null, Validators.required],
+      description: [null],
+      isActive: [true]
     });
   }
 
   ngOnChanges(): void {
+    this.initForm();
     if (this.id) {
       this.loadDetail(this.id);
     } else {
@@ -48,7 +58,8 @@ export class IngredientTypeDetail extends AppComponentBase implements OnChanges 
       next: (data) => {
         this.form.patchValue({
           name: data.name,
-          description: data.description
+          description: data.description,
+          isActive: data.isActive
         });
       },
       error: () => {
@@ -84,6 +95,7 @@ export class IngredientTypeDetail extends AppComponentBase implements OnChanges 
 
   private resetForm(): void {
     this.form.reset();
+    this.form.patchValue({ isActive: true });
     this.resetFormSubmitted();
   }
 }

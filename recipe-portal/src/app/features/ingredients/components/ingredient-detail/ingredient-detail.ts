@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, inject, effect } from '@angular/core';
+import { LanguageService } from '../../../../core/services/language.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
@@ -7,7 +8,9 @@ import { MessageModule } from 'primeng/message';
 import { AppComponentBase } from '../../../../core/component/app-component-base';
 import { IngredientService } from '../../services/ingredient.service';
 import { IngredientTypeService } from '../../../ingredient-types/services/ingredient-type.service';
-import { SelectModule } from 'primeng/select';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { MultilingualInput } from '../../../../shared/components/multilingual-input/multilingual-input';
 
 @Component({
   selector: 'app-ingredient-detail',
@@ -18,7 +21,9 @@ import { SelectModule } from 'primeng/select';
     InputTextModule,
     TextareaModule,
     MessageModule,
-    SelectModule
+    MultiSelectModule,
+    ToggleSwitchModule,
+    MultilingualInput
   ],
   templateUrl: './ingredient-detail.html'
 })
@@ -30,14 +35,25 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
   private fb = inject(FormBuilder);
   private ingredientService = inject(IngredientService);
   private ingredientTypeService = inject(IngredientTypeService);
+  private languageService = inject(LanguageService);
 
   constructor() {
     super();
 
+    this.initForm();
+
+    effect(() => {
+      this.languageService.currentLanguage();
+      this.loadTypes();
+    });
+  }
+
+  private initForm(): void {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: [''],
-      typeId: [null, Validators.required],
+      name: [null, Validators.required],
+      description: [null],
+      unit: [''],
+      typeIds: [[], Validators.required],
       isActive: [true]
     });
   }
@@ -47,6 +63,7 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
   }
 
   ngOnChanges(): void {
+    this.initForm();
     if (this.id) {
       this.loadDetail(this.id);
     } else {
@@ -56,7 +73,10 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
 
   private loadTypes(): void {
     this.ingredientTypeService.getAll().subscribe(res => {
-      this.types = res || [];
+      this.types = (res || []).map(t => ({
+        ...t,
+        displayName: typeof t.name === 'string' ? t.name : (t.name?.en || t.name?.vi || 'Unnamed')
+      }));
     });
   }
 
@@ -66,7 +86,8 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
         this.form.patchValue({
           name: data.name,
           description: data.description,
-          typeId: data.typeId,
+          unit: data.unit || '',
+          typeIds: data.types?.map((t: any) => t.id) || [],
           isActive: data.isActive
         });
       },

@@ -1,16 +1,19 @@
 export class IngredientModel {
   id: number;
-  name: string;
-  description: string;
+  name: any;
+  description: any;
+  unit: string;
   isActive: boolean;
-  typeId: number | null;
+  typeIds: number[];
+  types?: any[];
   ingredientTypeName?: string;
 
   constructor() {
     this.id = 0;
-    this.name = '';
-    this.description = '';
+    this.name = {};
+    this.description = {};
+    this.unit = '';
     this.isActive = true;
-    this.typeId = null;
+    this.typeIds = [];
   }
 }

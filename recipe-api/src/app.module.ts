@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientModule } from './ingredient/ingredient.module';
 import { IngredientTypeModule } from './ingredient-types/ingredient-type.module';
 import { RecipeModule } from './recipe/recipe.module';
-import { RecipeIngredientModule } from './recipe-ingredient/recipe-ingredient.module';
 import { TagModule } from './tag/tag.module';
 
 @Module({
@@ -19,7 +18,6 @@ import { TagModule } from './tag/tag.module';
     IngredientModule,
     IngredientTypeModule,
     RecipeModule,
-    RecipeIngredientModule,
     TagModule,
   ],
   controllers: [AppController],

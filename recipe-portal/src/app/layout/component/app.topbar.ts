@@ -5,11 +5,15 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { inject } from '@angular/core';
+import { LanguageService } from '../../core/services/language.service';
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
+  imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, SelectModule, FormsModule],
   template: `
     <div class="layout-topbar">
       <div class="layout-topbar-logo-container">
@@ -42,6 +46,10 @@ import { LayoutService } from '../service/layout.service';
       </div>
 
       <div class="layout-topbar-actions">
+        <div class="flex items-center mr-2">
+          <p-select [options]="languages" [(ngModel)]="selectedLanguage" optionLabel="name" optionValue="code"
+            (onChange)="onLanguageChange($event.value)" [showClear]="false" class="p-select-sm"></p-select>
+        </div>
         <div class="layout-config-menu">
           <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
             <i
@@ -89,7 +97,19 @@ import { LayoutService } from '../service/layout.service';
     </div>`
 })
 export class AppTopbar {
+  languages = [
+    { name: 'English', code: 'en' },
+    { name: 'Tiếng Việt', code: 'vi' }
+  ];
+
+  private languageService = inject(LanguageService);
+  selectedLanguage = this.languageService.getLanguage();
+
   constructor(public layoutService: LayoutService) {
+  }
+
+  onLanguageChange(lang: string) {
+    this.languageService.setLanguage(lang);
   }
 
   toggleDarkMode() {

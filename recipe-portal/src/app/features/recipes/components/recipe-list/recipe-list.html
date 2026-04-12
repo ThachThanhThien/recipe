@@ -1,0 +1,50 @@
+<div class="card">
+  <div class="text-right">
+    <p-button label="Add" icon="pi pi-plus" (click)="selectedRecipeId = null; isShowDetail = true" />
+  </div>
+  <div class="pt-2">
+    <p-table [value]="recipes" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>#</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Ingredients</th>
+          <th>Status</th>
+          <th style="width:220px">Actions</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-recipe>
+        <tr>
+          <td>{{ recipe.id }}</td>
+          <td>{{ recipe.title }}</td>
+          <td>{{ recipe.description }}</td>
+          <td>{{ getIngredientCount(recipe) }}</td>
+          <td>
+            <p-tag [severity]="recipe.isActive ? 'success' : 'danger'" [value]="recipe.isActive ? 'Active' : 'Inactive'" />
+          </td>
+          <td>
+            <p-button type="button" icon="pi pi-pencil" [rounded]="true" [text]="true"
+              (click)="selectedRecipeId = recipe.id; isShowDetail = true" pTooltip="Edit"></p-button>
+            <p-button type="button" [icon]="recipe.isActive ? 'pi pi-times' : 'pi pi-check'" [rounded]="true" [text]="true"
+              [severity]="recipe.isActive ? 'danger' : 'success'" (click)="updateStatus(recipe)"
+              [pTooltip]="recipe.isActive ? 'Deactivate' : 'Activate'"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">No data available</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<app-side-drawer [visible]="isShowDetail" (close)="isShowDetail = false"
+  [title]="selectedRecipeId ? 'Detail' : 'Add'" (save)="recipeDetail.save()">
+  <app-recipe-detail #recipeDetail [id]="selectedRecipeId"
+    (onSaved)="isShowDetail = false; getAllRecipes()"></app-recipe-detail>
+</app-side-drawer>

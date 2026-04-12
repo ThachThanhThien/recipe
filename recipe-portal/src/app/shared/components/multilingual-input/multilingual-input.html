@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-2 mb-4">
+  <label class="font-bold text-sm text-foreground/80 flex items-center gap-2">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+  <p-tabs [value]="locales[0]">
+    <p-tablist>
+      <div class="flex items-center justify-between w-full border-b border-border/40">
+        <div class="flex">
+          <p-tab *ngFor="let locale of locales" [value]="locale">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-black uppercase tracking-tighter">{{ locale }}</span>
+              <span class="text-sm font-semibold">{{ getLocaleLabel(locale) }}</span>
+              <div *ngIf="isLocaleInvalid(locale)" class="w-2 h-2 rounded-full bg-red-500 shadow-sm shadow-red-500/50 animate-pulse"></div>
+            </div>
+          </p-tab>
+        </div>
+      </div>
+    </p-tablist>
+
+    <p-tabpanels [formGroup]="form">
+      <p-tabpanel *ngFor="let locale of locales" [value]="locale">
+        <div class="pt-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <ng-container [ngSwitch]="type">
+            <!-- Text Input -->
+            <input 
+              *ngSwitchCase="'text'"
+              id="{{locale}}-{{label}}"
+              pInputText
+              [formControlName]="locale"
+              [placeholder]="placeholder || ('Enter ' + label + ' in ' + getLocaleLabel(locale))"
+              class="w-full"
+              (blur)="onTouched()"
+            />
+
+            <!-- Textarea -->
+            <textarea 
+              *ngSwitchCase="'textarea'"
+              id="{{locale}}-{{label}}"
+              pTextarea
+              [formControlName]="locale"
+              [placeholder]="placeholder || ('Enter ' + label + ' in ' + getLocaleLabel(locale))"
+              [rows]="rows"
+              class="w-full"
+              (blur)="onTouched()"
+            ></textarea>
+
+            <!-- Editor -->
+            <div *ngSwitchCase="'editor'" class="w-full">
+              <p-editor 
+                [formControlName]="locale"
+                [style]="{ height: '250px' }"
+                (onBlur)="onTouched()"
+              ></p-editor>
+            </div>
+          </ng-container>
+
+          <div *ngIf="isLocaleInvalid(locale)" class="mt-2 text-xs font-bold text-red-500 flex items-center gap-1">
+            <span class="pi pi-exclamation-circle text-[10px]"></span>
+            {{ label }} in {{ getLocaleLabel(locale) }} is required
+          </div>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

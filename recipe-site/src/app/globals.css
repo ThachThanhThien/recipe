@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FF6B35;
+  --color-secondary: #A37E58;
+  --color-accent: #4CAF50;
+  --color-beige: #FAF9F6;
+  --color-charcoal: #1A1A1A;
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --font-outfit: var(--font-outfit);
+  --font-inter: var(--font-inter);
+}
+
+:root {
+  --background: #FAF9F6;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #FF6B35;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F3F4F6;
+  --secondary-foreground: #111827;
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+  --accent: #4CAF50;
+  --accent-foreground: #FFFFFF;
+  --destructive: #EF4444;
+  --destructive-foreground: #F9FAFB;
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #FF6B35;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #F9FAFB;
+  --card: #1E1E1E;
+  --card-foreground: #F9FAFB;
+  --popover: #1E1E1E;
+  --popover-foreground: #F9FAFB;
+  --primary: #FF6B35;
+  --primary-foreground: #FFFFFF;
+  --secondary: #2D2D2D;
+  --secondary-foreground: #F9FAFB;
+  --muted: #2D2D2D;
+  --muted-foreground: #9CA3AF;
+  --accent: #4CAF50;
+  --accent-foreground: #FFFFFF;
+  --destructive: #7F1D1D;
+  --destructive-foreground: #F9FAFB;
+  --border: #2D2D2D;
+  --input: #2D2D2D;
+  --ring: #FF6B35;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+.glass {
+  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+}
+
+.dark .glass {
+  @apply bg-black/50 backdrop-blur-md border border-white/10;
+}

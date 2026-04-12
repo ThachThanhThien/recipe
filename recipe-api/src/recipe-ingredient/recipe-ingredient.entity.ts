@@ -19,7 +19,4 @@ export class RecipeIngredient {
 
   @Column()
   quantity: string;
-
-  @Column()
-  unit: string;
 }
