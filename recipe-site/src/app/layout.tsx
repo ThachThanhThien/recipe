@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { getLang } from "@/lib/lang-server";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,14 +20,18 @@ export const metadata: Metadata = {
   keywords: ["recipes", "cooking", "healthy eating", "foodie", "tasty"],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getLang();
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${outfit.variable} antialiased font-inter`}>
+    <html lang={lang} suppressHydrationWarning>
+      <body
+        className={`${inter.variable} ${outfit.variable} antialiased font-inter`}
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

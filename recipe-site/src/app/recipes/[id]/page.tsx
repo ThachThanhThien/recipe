@@ -1,218 +1,261 @@
-"use client"
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { ChevronLeft, Clock, Flame, Users, ChefHat, Star } from "lucide-react";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { RecipeImage } from "@/components/recipe-image";
+import { IngredientList } from "@/components/ingredient-list";
+import { InstructionSteps } from "@/components/instruction-steps";
+import { RecipeCard } from "@/components/recipe-card";
+import { FavoriteButton } from "@/components/favorite-button";
+import { StartCookingButton } from "@/components/cooking-mode";
+import { ReviewSection } from "@/components/review-section";
+import { TrackView } from "@/components/track-view";
+import { getRecipe, getRecipes, getReviews } from "@/lib/api";
+import { pickLocale, splitInstructions } from "@/lib/i18n";
+import { getLang } from "@/lib/lang-server";
+import { t } from "@/lib/translations";
+import { recipeJsonLd, SITE_URL } from "@/lib/seo";
+import { resolveImageUrl } from "@/lib/image";
+import { cn } from "@/lib/utils";
 
-import { useParams, useRouter } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import { MOCK_RECIPES } from "@/lib/mock-data"
-import { motion } from "framer-motion"
-import Image from "next/image"
-import { 
-  Clock, 
-  Users, 
-  Flame, 
-  ChefHat, 
-  ChevronLeft, 
-  Heart, 
-  Share2, 
-  Printer, 
-  CheckCircle2,
-  Bookmark
-} from "lucide-react"
-import { useState } from "react"
-import { cn } from "@/lib/utils"
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const lang = await getLang();
+  const recipe = await getRecipe(id, { lang });
+  if (!recipe) return { title: t(lang, "detail.notFound") };
+  const title = pickLocale(recipe.title, lang, t(lang, "detail.fallbackTitle"));
+  const description = pickLocale(recipe.description, lang, t(lang, "detail.fallbackDesc"));
+  const image = resolveImageUrl(recipe.image);
+  const url = `${SITE_URL}/recipes/${recipe.id}`;
+  return {
+    title: `${title} | TastyFresh`,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title,
+      description,
+      url,
+      siteName: "TastyFresh",
+      images: image ? [{ url: image, alt: title }] : undefined,
+    },
+    twitter: {
+      card: image ? "summary_large_image" : "summary",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
 
-export default function RecipeDetailPage() {
-  const params = useParams()
-  const router = useRouter()
-  const recipe = MOCK_RECIPES.find(r => r.id === params.id)
-  const [checkedIngredients, setCheckedIngredients] = useState<string[]>([])
+export default async function RecipeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const lang = await getLang();
+  const [recipe, reviewsRaw] = await Promise.all([
+    getRecipe(id, { lang }),
+    getReviews(id, { lang }),
+  ]);
+  if (!recipe) notFound();
 
-  if (!recipe) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Recipe Not Found</h1>
-          <button onClick={() => router.push("/")} className="text-primary hover:underline font-bold">Return to Home</button>
-        </div>
-      </div>
-    )
+  const title = pickLocale(recipe.title, lang, t(lang, "detail.fallbackTitle"));
+  const description = pickLocale(recipe.description, lang);
+  const steps = splitInstructions(recipe.instructions, lang);
+  const reviews = reviewsRaw ?? [];
+
+  let related: Awaited<ReturnType<typeof getRecipes>> = [];
+  try {
+    const all = await getRecipes({ lang });
+    related = all
+      .filter((r) => r.id !== recipe.id && (r.category === recipe.category || r.isFeatured))
+      .slice(0, 3);
+  } catch {
+    related = [];
   }
 
-  const toggleIngredient = (item: string) => {
-    setCheckedIngredients(prev => 
-      prev.includes(item) ? prev.filter(i => i !== item) : [...prev, item]
-    )
-  }
+  const difficulty = recipe.difficulty ?? "Easy";
+  const difficultyLabel = t(lang, `difficulty.${difficulty}` as const);
+  const jsonLd = recipeJsonLd(recipe);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <TrackView id={recipe.id} />
+      <Header lang={lang} />
+
       <main className="flex-grow pt-24 pb-20">
-        <div className="max-w-7xl mx-auto px-6">
-          {/* Breadcrumb & Navigation */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between mb-8">
-            <button 
-              onClick={() => router.back()} 
+            <Link
+              href="/recipes"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs"
             >
-              <ChevronLeft size={16} /> Back to recipes
-            </button>
-            <div className="flex items-center gap-4">
-              <button className="p-3 bg-card border rounded-full hover:shadow-lg transition-all"><Heart size={20} /></button>
-              <button className="p-3 bg-card border rounded-full hover:shadow-lg transition-all"><Share2 size={20} /></button>
-              <button className="p-3 bg-card border rounded-full hover:shadow-lg transition-all"><Printer size={20} /></button>
-            </div>
+              <ChevronLeft size={14} /> {t(lang, "detail.back")}
+            </Link>
+            <FavoriteButton recipeId={recipe.id} size="md" variant="inline" />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            {/* Left Content: Image & Metadata */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14">
             <div className="lg:col-span-7">
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="relative aspect-[16/10] rounded-[2.5rem] overflow-hidden shadow-2xl mb-12"
-              >
-                <Image 
-                  src={recipe.image} 
-                  alt={recipe.title.en} 
-                  fill 
-                  className="object-cover" 
-                />
-                <div className="absolute top-6 left-6 flex gap-3">
-                  {recipe.tags.map(tag => (
-                    <span key={tag} className="glass text-xs font-bold px-4 py-2 rounded-full shadow-lg">
-                      {tag}
+              <div className="relative aspect-[16/10] rounded-[2rem] overflow-hidden shadow-xl mb-10">
+                <RecipeImage src={recipe.image} alt={title} seed={recipe.id} priority />
+                <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2">
+                  {recipe.isFeatured && (
+                    <span className="bg-primary text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full shadow-md">
+                      {t(lang, "detail.featured")}
                     </span>
-                  ))}
+                  )}
+                  {recipe.isTrending && (
+                    <span className="bg-accent text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full shadow-md">
+                      {t(lang, "detail.trending")}
+                    </span>
+                  )}
+                  {recipe.category && (
+                    <span className="glass text-foreground text-xs font-semibold px-3 py-1.5 rounded-full">
+                      {recipe.category}
+                    </span>
+                  )}
                 </div>
-              </motion.div>
-
-              <div className="flex flex-col gap-6 mb-12">
-                <div className="flex items-center gap-2 text-primary font-bold tracking-widest text-sm uppercase">
-                  <ChefHat size={18} /> Mastered by TastyChef
-                </div>
-                <h1 className="font-outfit text-5xl md:text-6xl font-black">{recipe.title.en}</h1>
-                <p className="text-xl text-muted-foreground leading-relaxed italic">
-                  "{recipe.description.en}"
-                </p>
               </div>
 
-              {/* Prep Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-card rounded-[2rem] border border-border/40 shadow-sm mb-16">
-                {[
-                  { icon: Clock, label: "PREP", value: recipe.prepTime, color: "text-blue-500" },
-                  { icon: Clock, label: "COOK", value: recipe.cookTime, color: "text-orange-500" },
-                  { icon: Users, label: "SERVINGS", value: `${recipe.servings} People`, color: "text-green-500" },
-                  { icon: Flame, label: "CALORIES", value: `${recipe.calories} kcal`, color: "text-red-500" },
-                ].map((item, i) => (
-                  <div key={i} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-secondary/30">
-                    <item.icon className={cn("mb-3", item.color)} size={24} />
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">{item.label}</span>
-                    <span className="text-lg font-black">{item.value}</span>
+              <div className="mb-8">
+                <div className="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs mb-3">
+                  <ChefHat size={16} /> {t(lang, "detail.kitchen")}
+                </div>
+                <h1 className="font-outfit text-4xl md:text-5xl lg:text-6xl font-black mb-5 leading-tight">{title}</h1>
+                {description && (
+                  <p className="text-lg text-muted-foreground leading-relaxed">{description}</p>
+                )}
+
+                {recipe.tags && recipe.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-5">
+                    {recipe.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="bg-secondary/60 text-foreground/80 text-xs font-semibold px-3 py-1 rounded-full"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
 
-              {/* Instructions */}
-              <section className="mb-16">
-                <h2 className="font-outfit text-3xl font-black mb-8 flex items-center gap-4">
-                  Instructions <div className="h-px flex-grow bg-border/40" />
-                </h2>
-                <div className="flex flex-col gap-10">
-                  {recipe.instructions.en.split('\n').filter(s => s.trim()).map((step, i) => (
-                    <div key={i} className="group relative flex gap-8">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/10 border-2 border-primary/20 flex items-center justify-center font-outfit font-black text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                        {i + 1}
-                      </div>
-                      <div className="pt-2">
-                        <p className="text-lg leading-relaxed text-foreground group-hover:text-primary transition-colors">
-                          {step}
-                        </p>
-                      </div>
-                      <div className="absolute -left-4 top-0 bottom-0 w-1 bg-primary scale-y-0 group-hover:scale-y-100 origin-center transition-transform duration-500 rounded-full" />
-                    </div>
-                  ))}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 p-4 bg-card rounded-3xl border border-border/40 mb-12">
+                <Stat icon={<Clock size={20} />} label={t(lang, "detail.prep")} value={recipe.prepTime || "—"} color="text-blue-500" />
+                <Stat icon={<Clock size={20} />} label={t(lang, "detail.cook")} value={recipe.cookTime || "—"} color="text-orange-500" />
+                <Stat icon={<Users size={20} />} label={t(lang, "detail.servings")} value={`${recipe.servings || 1}`} color="text-green-500" />
+                <Stat
+                  icon={<Flame size={20} />}
+                  label={t(lang, "detail.calories")}
+                  value={recipe.calories ? `${recipe.calories} kcal` : "—"}
+                  color="text-red-500"
+                />
+              </div>
+
+              <section className="mb-14">
+                <div className="flex items-center gap-4 mb-6">
+                  <h2 className="font-outfit text-3xl font-black">{t(lang, "detail.instructions")}</h2>
+                  <div className="h-px flex-grow bg-border/40" />
+                  <span className={cn(
+                    "px-3 py-1 rounded-full text-xs font-bold",
+                    difficulty === "Easy" && "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+                    difficulty === "Medium" && "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+                    difficulty === "Hard" && "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300",
+                  )}>
+                    {difficultyLabel}
+                  </span>
                 </div>
+                <p className="text-sm text-muted-foreground mb-6">
+                  {t(lang, "detail.instructionsHelp")}
+                </p>
+                <InstructionSteps
+                  steps={steps}
+                  emptyText={t(lang, "detail.noInstructions")}
+                  markStepAriaPrefix={t(lang, "detail.markStepComplete")}
+                />
               </section>
             </div>
 
-            {/* Right Content: Sidebar Ingredients */}
-            <div className="lg:col-span-5">
-              <aside className="sticky top-32">
-                <div className="bg-card rounded-[2.5rem] border border-border/60 p-10 shadow-xl overflow-hidden relative group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-700" />
-                  
-                  <h3 className="font-outfit text-3xl font-black mb-8 relative z-10">Ingredients.</h3>
-                  <div className="flex flex-col gap-5 relative z-10">
-                    {recipe.ingredients.map((ing, i) => (
-                      <label 
-                        key={i} 
+            <aside className="lg:col-span-5">
+              <div className="lg:sticky lg:top-28 flex flex-col gap-6">
+                <IngredientList recipe={recipe} />
+
+                <StartCookingButton title={title} steps={steps} />
+
+                <div className="bg-charcoal rounded-3xl p-6 text-white">
+                  <h4 className="font-outfit font-bold mb-2">{t(lang, "detail.rating")}</h4>
+                  <div className="flex items-center gap-1 text-yellow-400 mb-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        size={16}
                         className={cn(
-                          "flex items-center justify-between p-4 rounded-xl border border-transparent transition-all cursor-pointer select-none",
-                          checkedIngredients.includes(ing.item.en) 
-                            ? "bg-primary/5 border-primary/10 opacity-60" 
-                            : "hover:bg-secondary/50 hover:border-border"
+                          "transition-colors",
+                          s <= Math.round(recipe.rating) ? "fill-yellow-400 text-yellow-400" : "text-white/20",
                         )}
-                      >
-                        <div className="flex items-center gap-4">
-                          <button 
-                            onClick={(e) => { e.preventDefault(); toggleIngredient(ing.item.en); }}
-                            className={cn(
-                              "w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all",
-                              checkedIngredients.includes(ing.item.en) 
-                                ? "bg-primary border-primary" 
-                                : "border-muted-foreground/30"
-                            )}
-                          >
-                            {checkedIngredients.includes(ing.item.en) && <CheckCircle2 size={16} className="text-white" />}
-                          </button>
-                          <span className={cn(
-                            "font-semibold transition-all",
-                            checkedIngredients.includes(ing.item.en) && "line-through"
-                          )}>
-                            {ing.item.en}
-                          </span>
-                        </div>
-                        <span className="text-primary font-bold uppercase tracking-tight text-sm">
-                          {ing.amount}
-                        </span>
-                      </label>
+                      />
                     ))}
+                    <span className="text-white font-bold ml-2 text-base">
+                      {recipe.rating ? recipe.rating.toFixed(1) : "—"}
+                    </span>
+                    <span className="text-white/40 text-sm ml-1">
+                      ({recipe.reviews} {recipe.reviews === 1 ? t(lang, "detail.review") : t(lang, "detail.reviews")})
+                    </span>
                   </div>
-
-                  <div className="mt-12 pt-8 border-t relative z-10">
-                    <button className="w-full bg-primary text-white py-5 rounded-2xl font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-                      Add all to Shopping List
-                    </button>
-                    <p className="text-center mt-6 text-xs text-muted-foreground font-medium">
-                      Based on {recipe.servings} servings
-                    </p>
-                  </div>
+                  <a href="#reviews-heading" className="text-xs uppercase tracking-widest font-bold text-primary hover:text-white transition-colors">
+                    {t(lang, "detail.readReviews")}
+                  </a>
                 </div>
-
-                {/* Rating Card */}
-                <div className="mt-8 bg-charcoal rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
-                  <div className="absolute bottom-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl translate-y-1/2 translate-x-1/2" />
-                  <div className="relative z-10">
-                    <h4 className="font-outfit font-bold mb-2">Recipe Rating</h4>
-                    <div className="flex items-center gap-1 text-yellow-400 mb-4">
-                      {[1,2,3,4,5].map(s => <span key={s}>★</span>)}
-                      <span className="text-white font-bold ml-2">{recipe.rating}</span>
-                      <span className="text-white/40 text-sm ml-1">({recipe.reviews} reviews)</span>
-                    </div>
-                    <button className="text-xs uppercase tracking-widest font-black text-primary hover:text-white transition-colors">
-                      Write a review →
-                    </button>
-                  </div>
-                </div>
-              </aside>
-            </div>
+              </div>
+            </aside>
           </div>
+
+          <ReviewSection recipeId={recipe.id} initialReviews={reviews} />
+
+          {related.length > 0 && (
+            <section className="mt-20">
+              <div className="flex items-center gap-3 mb-8">
+                <h2 className="font-outfit text-3xl font-black">{t(lang, "detail.related")}</h2>
+                <div className="h-px flex-grow bg-border/40" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {related.map((r, i) => (
+                  <RecipeCard key={r.id} recipe={r} index={i} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
 
       <Footer />
     </div>
-  )
+  );
+}
+
+function Stat({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  color: string;
+}) {
+  return (
+    <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-secondary/30">
+      <span className={cn("mb-2", color)} aria-hidden>
+        {icon}
+      </span>
+      <span className="text-[10px] uppercase font-bold tracking-widest text-muted-foreground">{label}</span>
+      <span className="text-base font-black mt-0.5 text-center">{value}</span>
+    </div>
+  );
 }

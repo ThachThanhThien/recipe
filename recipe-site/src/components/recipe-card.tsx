@@ -1,100 +1,129 @@
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import { Clock, Star, Heart, ChefHat } from "lucide-react"
-import { motion } from "framer-motion"
-import { Recipe } from "@/lib/mock-data"
-import { cn } from "@/lib/utils"
+import Link from "next/link";
+import { Clock, Star, Flame, Users } from "lucide-react";
+import { motion } from "framer-motion";
+import type { Recipe } from "@/lib/api";
+import { pickLocale } from "@/lib/i18n";
+import { RecipeImage } from "@/components/recipe-image";
+import { FavoriteButton } from "@/components/favorite-button";
+import { cn } from "@/lib/utils";
 
 interface RecipeCardProps {
   recipe: Recipe;
-  index: number;
+  index?: number;
+  priority?: boolean;
 }
 
-export function RecipeCard({ recipe, index }: RecipeCardProps) {
+export function RecipeCard({ recipe, index = 0, priority }: RecipeCardProps) {
+  const title = pickLocale(recipe.title, undefined, "Untitled recipe");
+  const description = pickLocale(recipe.description);
+  const difficulty = recipe.difficulty ?? "Easy";
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="group bg-card rounded-3xl overflow-hidden border border-border/40 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 flex flex-col h-full"
+    <motion.article
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ delay: Math.min(index, 6) * 0.06, duration: 0.4, ease: "easeOut" }}
+      className="group bg-card rounded-3xl overflow-hidden border border-border/40 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 flex flex-col h-full focus-within:ring-2 focus-within:ring-primary"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Image 
-          src={recipe.image} 
-          alt={recipe.title.en} 
-          fill 
-          className="object-cover group-hover:scale-110 transition-transform duration-700" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        
-        <div className="absolute top-4 left-4 flex gap-2">
-          {recipe.isFeatured && (
-            <span className="bg-primary text-white text-[10px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-full shadow-lg">
-              Featured
+      <Link href={`/recipes/${recipe.id}`} className="block focus:outline-none">
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <RecipeImage
+            src={recipe.image}
+            alt={title}
+            seed={recipe.id}
+            priority={priority}
+            className="group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+
+          <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
+            {recipe.isFeatured && (
+              <span className="bg-primary text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full shadow-md">
+                Featured
+              </span>
+            )}
+            {recipe.isTrending && (
+              <span className="bg-accent text-white text-[10px] uppercase tracking-widest font-bold px-2.5 py-1 rounded-full shadow-md">
+                Trending
+              </span>
+            )}
+            {recipe.category && (
+              <span className="glass text-foreground text-xs font-semibold px-2.5 py-1 rounded-full">
+                {recipe.category}
+              </span>
+            )}
+          </div>
+
+          <div className="absolute top-3 right-3">
+            <FavoriteButton recipeId={recipe.id} size="sm" />
+          </div>
+
+          <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white text-xs font-semibold">
+            <div className="flex items-center gap-1.5 bg-black/45 px-2.5 py-1 rounded-full backdrop-blur-md">
+              <Clock size={12} />
+              {recipe.prepTime || "—"}
+            </div>
+            <div className="flex items-center gap-1.5 bg-black/45 px-2.5 py-1 rounded-full backdrop-blur-md">
+              <Star size={12} className="text-yellow-400 fill-yellow-400" />
+              {recipe.rating ? recipe.rating.toFixed(1) : "New"}
+            </div>
+          </div>
+        </div>
+      </Link>
+
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="flex items-center gap-3 mb-3 text-[10px] uppercase font-bold tracking-widest text-muted-foreground">
+          <span className={cn(
+            "px-2 py-0.5 rounded-full",
+            difficulty === "Easy" && "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300",
+            difficulty === "Medium" && "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300",
+            difficulty === "Hard" && "bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300",
+          )}>
+            {difficulty}
+          </span>
+          {recipe.calories > 0 && (
+            <span className="flex items-center gap-1">
+              <Flame size={12} />
+              {recipe.calories} kcal
             </span>
           )}
-          <span className="glass text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm backdrop-blur-md">
-            {recipe.category}
-          </span>
+          {recipe.servings > 0 && (
+            <span className="flex items-center gap-1">
+              <Users size={12} />
+              {recipe.servings}
+            </span>
+          )}
         </div>
 
-        <button className="absolute top-4 right-4 bg-white/20 backdrop-blur-md hover:bg-primary p-2.5 rounded-full text-white transition-all shadow-lg group/heart">
-          <Heart size={18} className="group-hover/heart:fill-white transition-colors" />
-        </button>
-
-        <div className="absolute bottom-4 left-4 flex items-center gap-3 text-white text-xs font-medium translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-          <div className="flex items-center gap-1.5 bg-black/40 px-2.5 py-1.5 rounded-full backdrop-blur-md">
-            <Clock size={14} className="text-primary" />
-            {recipe.prepTime}
-          </div>
-          <div className="flex items-center gap-1.5 bg-black/40 px-2.5 py-1.5 rounded-full backdrop-blur-md">
-            <Star size={14} className="text-yellow-400 fill-yellow-400" />
-            {recipe.rating}
-          </div>
-        </div>
-      </div>
-
-      <div className="p-6 flex flex-col flex-grow bg-card">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-6 h-px bg-primary/30" />
-          <span className="text-[10px] uppercase font-bold tracking-widest text-primary/80">
-            {recipe.difficulty} • {recipe.calories} kcal
-          </span>
-        </div>
-        
-        <Link href={`/recipes/${recipe.id}`} className="block group/title mb-3">
-          <h3 className="font-outfit text-xl font-bold leading-tight group-hover/title:text-primary transition-colors line-clamp-2">
-            {recipe.title.en}
+        <Link href={`/recipes/${recipe.id}`} className="block mb-2">
+          <h3 className="font-outfit text-lg font-bold leading-tight hover:text-primary transition-colors line-clamp-2">
+            {title}
           </h3>
         </Link>
-        
-        <p className="text-muted-foreground text-sm line-clamp-2 mb-6 flex-grow leading-relaxed">
-          {recipe.description.en}
-        </p>
 
-        <div className="flex items-center justify-between pt-4 border-t border-border/40 mt-auto">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-primary overflow-hidden border border-border shadow-sm">
-              <ChefHat size={16} />
-            </div>
-            <span className="text-xs font-semibold text-foreground/70 tracking-tight">By TastyChef</span>
+        {description && (
+          <p className="text-muted-foreground text-sm line-clamp-2 mb-4 flex-grow leading-relaxed">
+            {description}
+          </p>
+        )}
+
+        <div className="flex items-center justify-between pt-3 border-t border-border/40 mt-auto">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <Star size={12} className="text-yellow-400 fill-yellow-400" />
+            <span className="font-semibold text-foreground">{recipe.rating ? recipe.rating.toFixed(1) : "—"}</span>
+            {recipe.reviews > 0 && <span>({recipe.reviews})</span>}
           </div>
-          <Link 
+          <Link
             href={`/recipes/${recipe.id}`}
-            className="text-primary text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-all flex items-center gap-1 group/btn"
+            className="text-primary text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity flex items-center gap-1"
           >
-            Recipe Details
-            <motion.span 
-              whileHover={{ x: 3 }}
-              className="inline-block"
-            >
-              →
-            </motion.span>
+            View Recipe →
           </Link>
         </div>
       </div>
-    </motion.div>
-  )
+    </motion.article>
+  );
 }

@@ -24,7 +24,7 @@ export class RecipeList implements OnInit {
   selectedRecipeId: number | null = null;
   private languageService = inject(LanguageService);
   private recipeService = inject(RecipeService);
-  
+
   constructor() {
     effect(() => {
       this.languageService.currentLanguage();

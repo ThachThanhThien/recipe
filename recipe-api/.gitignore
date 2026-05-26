@@ -58,3 +58,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 dist/
 *.js
 *.js.map
+# uploads (user-generated, do not commit)
+/uploads

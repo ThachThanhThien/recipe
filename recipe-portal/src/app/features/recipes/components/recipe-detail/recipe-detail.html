@@ -17,7 +17,73 @@
     type="editor"
   ></app-multilingual-input>
 
-  <div class="flex flex-col gap-2">
+  <app-image-uploader formControlName="image" label="Thumbnail"></app-image-uploader>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="flex flex-col gap-1">
+      <label>Category</label>
+      <p-select [options]="categoryOptions" optionLabel="label" optionValue="value"
+        formControlName="category" placeholder="Select category" [fluid]="true"></p-select>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Prep Time</label>
+      <input pInputText formControlName="prepTime" placeholder="10 mins" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Cook Time</label>
+      <input pInputText formControlName="cookTime" placeholder="12 mins" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Servings</label>
+      <p-inputNumber formControlName="servings" [min]="1" [showButtons]="true" [fluid]="true"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Calories</label>
+      <p-inputNumber formControlName="calories" [min]="0" [showButtons]="true" [fluid]="true"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Difficulty</label>
+      <p-select [options]="difficultyOptions" optionLabel="label" optionValue="value"
+        formControlName="difficulty" [fluid]="true"></p-select>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Tags (comma-separated)</label>
+      <input pInputText formControlName="tags" placeholder="Quick, Healthy, Vegetarian" />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Rating</label>
+      <p-inputNumber formControlName="rating" [min]="0" [max]="5" [step]="0.1" [showButtons]="true" [fluid]="true"></p-inputNumber>
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label>Reviews</label>
+      <p-inputNumber formControlName="reviews" [min]="0" [showButtons]="true" [fluid]="true"></p-inputNumber>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="isFeatured" [binary]="true" inputId="isFeatured"></p-checkbox>
+      <label for="isFeatured">Featured</label>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="isTrending" [binary]="true" inputId="isTrending"></p-checkbox>
+      <label for="isTrending">Trending</label>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="isActive" [binary]="true" inputId="isActive"></p-checkbox>
+      <label for="isActive">Active</label>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2 mt-4">
     <div class="flex items-center justify-between">
       <label class="required-field">Ingredients</label>
       <p-button type="button" label="Add" icon="pi pi-plus" [text]="true" size="small"

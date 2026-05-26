@@ -15,11 +15,12 @@ export class LanguageInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data) => {
-        // Only transform if it's an array (list view)
-        if (Array.isArray(data)) {
-          return this.transform(data, lang);
-        }
-        return data;
+        // Transform Multilingual fields for both array responses (list views) and
+        // object responses (single entity, or paginated envelopes like
+        // { items, total, page, limit, totalPages }). Primitives pass through.
+        if (data === null || data === undefined) return data;
+        if (typeof data !== 'object') return data;
+        return this.transform(data, lang);
       }),
     );
   }
