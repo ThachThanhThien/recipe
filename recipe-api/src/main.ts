@@ -24,12 +24,17 @@ async function bootstrap() {
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new LanguageInterceptor());
 
+  const defaultOrigins = [
+    'http://localhost:4200', // Angular admin portal
+    'http://localhost:3002', // Next.js public site (dev)
+    'http://localhost:3001',
+  ];
+  const extraOrigins = (process.env.CORS_ORIGINS ?? '')
+    .split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
   app.enableCors({
-    origin: [
-      'http://localhost:4200', // Angular admin portal
-      'http://localhost:3002', // Next.js public site (dev)
-      'http://localhost:3001',
-    ],
+    origin: [...defaultOrigins, ...extraOrigins],
   });
 
   // Serve uploaded files under /uploads/*

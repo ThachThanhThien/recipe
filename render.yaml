@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: recipe-api
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: recipe-api
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/main
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGINS
+        sync: false

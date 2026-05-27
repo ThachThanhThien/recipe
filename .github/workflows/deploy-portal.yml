@@ -1,0 +1,74 @@
+name: Deploy Angular Portal to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'recipe-portal/**'
+      - '.github/workflows/deploy-portal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: recipe-portal
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: recipe-portal/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Inject API base URL into environment.prod.ts
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          if [ -z "$API_BASE_URL" ]; then
+            echo "::error::Repository variable API_BASE_URL is not set. Add it in Settings → Secrets and variables → Actions → Variables."
+            exit 1
+          fi
+          cat > src/environments/environment.prod.ts <<EOF
+          export const environment = {
+            production: true,
+            apiBaseUrl: '${API_BASE_URL}'
+          };
+          EOF
+
+      - name: Build Angular (production)
+        run: npx ng build --configuration production --base-href "/recipe/"
+
+      - name: SPA 404 fallback
+        run: cp dist/recipe-portal/browser/index.html dist/recipe-portal/browser/404.html
+
+      - name: Add .nojekyll
+        run: touch dist/recipe-portal/browser/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: recipe-portal/dist/recipe-portal/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
