@@ -33,7 +33,9 @@ jobs:
           cache-dependency-path: recipe-portal/package-lock.json
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install lightningcss-linux-x64-gnu
 
       - name: Inject API base URL into environment.prod.ts
         env:
