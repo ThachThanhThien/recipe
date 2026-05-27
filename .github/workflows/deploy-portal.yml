@@ -33,7 +33,7 @@ jobs:
           cache-dependency-path: recipe-portal/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Inject API base URL into environment.prod.ts
         env:
