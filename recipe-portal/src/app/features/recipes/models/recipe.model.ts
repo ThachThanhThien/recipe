@@ -29,7 +29,6 @@ export class RecipeModel {
   isTrending: boolean;
   isActive: boolean;
   ingredients: RecipeIngredientItemModel[];
-  recipeIngredients?: any[];
 
   constructor() {
     this.id = 0;

@@ -1,96 +1,137 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #FF6B35;
-  --color-secondary: #A37E58;
-  --color-accent: #4CAF50;
-  --color-beige: #FAF9F6;
-  --color-charcoal: #1A1A1A;
-  
+/* next-themes toggles a `.dark` class on <html>; make `dark:` follow it (not the OS setting). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-foreground: var(--primary-soft-foreground);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-destructive: var(--destructive);
 
-  --font-outfit: var(--font-outfit);
-  --font-inter: var(--font-inter);
+  --font-sans: var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgb(28 25 23 / 0.05), 0 2px 8px rgb(28 25 23 / 0.04);
+  --shadow-raised: 0 4px 12px rgb(28 25 23 / 0.08), 0 12px 32px rgb(28 25 23 / 0.06);
+
+  --animate-step-in: step-in 200ms ease-out;
+  @keyframes step-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
 }
 
+/* Contrast checked (WCAG AA): primary on white 5.2:1, white on primary 5.2:1,
+   muted-foreground on card 7.6:1; dark theme primary on background 8.7:1. */
 :root {
-  --background: #FAF9F6;
-  --foreground: #1A1A1A;
-  --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
-  --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  --primary: #FF6B35;
-  --primary-foreground: #FFFFFF;
-  --secondary: #F3F4F6;
-  --secondary-foreground: #111827;
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  --accent: #4CAF50;
-  --accent-foreground: #FFFFFF;
-  --destructive: #EF4444;
-  --destructive-foreground: #F9FAFB;
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #FF6B35;
-  --radius: 0.75rem;
+  --background: #fafaf9;
+  --foreground: #1c1917;
+  --card: #ffffff;
+  --card-foreground: #1c1917;
+  --muted: #f5f5f4;
+  --muted-foreground: #57534e;
+  --border: #e7e5e4;
+  --input: #d6d3d1;
+  --ring: #c2410c;
+  --primary: #c2410c;
+  --primary-hover: #9a3412;
+  --primary-foreground: #ffffff;
+  --primary-soft: #fff1e6;
+  --primary-soft-foreground: #9a3412;
+  --success: #15803d;
+  --success-soft: #ecfdf3;
+  --destructive: #b91c1c;
 }
 
 .dark {
-  --background: #121212;
-  --foreground: #F9FAFB;
-  --card: #1E1E1E;
-  --card-foreground: #F9FAFB;
-  --popover: #1E1E1E;
-  --popover-foreground: #F9FAFB;
-  --primary: #FF6B35;
-  --primary-foreground: #FFFFFF;
-  --secondary: #2D2D2D;
-  --secondary-foreground: #F9FAFB;
-  --muted: #2D2D2D;
-  --muted-foreground: #9CA3AF;
-  --accent: #4CAF50;
-  --accent-foreground: #FFFFFF;
-  --destructive: #7F1D1D;
-  --destructive-foreground: #F9FAFB;
-  --border: #2D2D2D;
-  --input: #2D2D2D;
-  --ring: #FF6B35;
+  --background: #0c0a09;
+  --foreground: #fafaf9;
+  --card: #1c1917;
+  --card-foreground: #fafaf9;
+  --muted: #292524;
+  --muted-foreground: #a8a29e;
+  --border: #292524;
+  --input: #44403c;
+  --ring: #fb923c;
+  --primary: #fb923c;
+  --primary-hover: #fdba74;
+  --primary-foreground: #1c1917;
+  --primary-soft: #431407;
+  --primary-soft-foreground: #fdba74;
+  --success: #4ade80;
+  --success-soft: #052e16;
+  --destructive: #f87171;
+  color-scheme: dark;
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+  html {
+    /* Keep anchored content clear of the sticky header. */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
   }
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground font-sans antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  label {
+    touch-action: manipulation;
+  }
+  button:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
   }
 }
 
-.glass {
-  @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-sm;
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.dark .glass {
-  @apply bg-black/50 backdrop-blur-md border border-white/10;
+/* Room for the fixed mobile tab bar (and the phone's home indicator). */
+@utility pb-tabbar {
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

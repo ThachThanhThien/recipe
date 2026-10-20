@@ -37,21 +37,6 @@ jobs:
           npm install
           npm install lightningcss-linux-x64-gnu @tailwindcss/oxide-linux-x64-gnu
 
-      - name: Inject API base URL into environment.prod.ts
-        env:
-          API_BASE_URL: ${{ vars.API_BASE_URL }}
-        run: |
-          if [ -z "$API_BASE_URL" ]; then
-            echo "::error::Repository variable API_BASE_URL is not set. Add it in Settings → Secrets and variables → Actions → Variables."
-            exit 1
-          fi
-          cat > src/environments/environment.prod.ts <<EOF
-          export const environment = {
-            production: true,
-            apiBaseUrl: '${API_BASE_URL}'
-          };
-          EOF
-
       - name: Build Angular (production)
         run: npx ng build --configuration production --base-href "/recipe/"
 

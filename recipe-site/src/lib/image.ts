@@ -10,12 +10,15 @@ export function hasImage(url: string | null | undefined): url is string {
   return !!url && url.trim().length > 0;
 }
 
+/**
+ * Absolute URLs pass through. Relative ones (e.g. `/uploads/pho.webp`, committed
+ * by recipe-portal into `public/uploads/`) are served by this site itself.
+ */
 export function resolveImageUrl(url: string | null | undefined): string | null {
   if (!hasImage(url)) return null;
   const trimmed = url.trim();
   if (/^(https?:|data:|blob:)/i.test(trimmed)) return trimmed;
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
-  return `${apiBase}${trimmed.startsWith("/") ? "" : "/"}${trimmed}`;
+  return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }
 
 export function fallbackGradient(seed: string | number): string {

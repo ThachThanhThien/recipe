@@ -1,81 +1,49 @@
 "use client";
 
-import { useTransition } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Globe } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { setLangAction } from "@/lib/lang-actions";
-import { LANG_LABELS, SUPPORTED_LANGS, type Lang } from "@/lib/lang";
+import { useT } from "@/components/lang-provider";
+import { LANG_COOKIE, LANG_LABELS, SUPPORTED_LANGS, type Lang } from "@/lib/lang";
 
-interface LanguageSwitcherProps {
-  current: Lang;
-  /** Visual variant. `compact` for the desktop header bar; `wide` for the mobile menu. */
-  variant?: "compact" | "wide";
+const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
+const LANG_PREFIX = new RegExp(`^/(${SUPPORTED_LANGS.join("|")})(?=/|$)`);
+
+/**
+ * Each language is a separate pre-rendered page. Store the choice in the cookie
+ * that next.config.ts rewrites on, then reload the clean (unprefixed) URL.
+ */
+function reloadInLanguage(next: Lang) {
+  document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=${ONE_YEAR_SECONDS}; samesite=lax`;
+  const path = window.location.pathname.replace(LANG_PREFIX, "") || "/";
+  window.location.assign(path + window.location.search + window.location.hash);
 }
 
-export function LanguageSwitcher({ current, variant = "compact" }: LanguageSwitcherProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [pending, startTransition] = useTransition();
+export function LanguageSwitcher({ current }: { current: Lang }) {
+  const t = useT();
+  const [pending, setPending] = useState(false);
 
   const switchTo = (next: Lang) => {
     if (next === current || pending) return;
-    startTransition(async () => {
-      await setLangAction(next, pathname ?? "/");
-      router.refresh();
-    });
+    setPending(true);
+    reloadInLanguage(next);
   };
 
-  if (variant === "wide") {
-    return (
-      <div className="grid grid-cols-2 gap-2 p-1 bg-secondary/40 rounded-xl">
-        {SUPPORTED_LANGS.map((code) => {
-          const active = code === current;
-          return (
-            <button
-              key={code}
-              type="button"
-              onClick={() => switchTo(code)}
-              disabled={pending}
-              aria-pressed={active}
-              className={cn(
-                "px-4 py-3 rounded-lg text-sm font-bold transition-colors",
-                active
-                  ? "bg-primary text-white shadow"
-                  : "text-foreground/70 hover:text-primary",
-                pending && !active && "opacity-50",
-              )}
-            >
-              {LANG_LABELS[code].native}
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
-
   return (
-    <div
-      className="flex items-center gap-0.5 p-0.5 bg-secondary/40 rounded-full"
-      role="group"
-      aria-label="Language"
-    >
-      <Globe size={14} className="ml-2 mr-1 text-muted-foreground" aria-hidden />
+    <div role="group" aria-label={t("nav.language")} className="flex h-11 items-center rounded-xl bg-muted p-1">
       {SUPPORTED_LANGS.map((code) => {
         const active = code === current;
         return (
           <button
             key={code}
             type="button"
+            lang={code}
             onClick={() => switchTo(code)}
             disabled={pending}
             aria-pressed={active}
             aria-label={LANG_LABELS[code].native}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-bold transition-colors",
-              active
-                ? "bg-primary text-white shadow-sm"
-                : "text-foreground/70 hover:text-primary",
+              "h-9 min-w-11 rounded-lg px-2 text-xs font-semibold transition-colors",
+              active ? "bg-card text-foreground shadow-card" : "text-muted-foreground hover:text-foreground",
               pending && !active && "opacity-50",
             )}
           >

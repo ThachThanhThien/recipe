@@ -83,7 +83,7 @@ export class IngredientTypeDetail extends AppComponentBase implements OnChanges 
 
     request$.subscribe({
       next: () => {
-        this.showSuccess('Success', 'Saved successfully');
+        this.showSuccess('Saved', 'The public site updates in about a minute.');
         this.onSaved.emit();
         this.resetForm();
       },

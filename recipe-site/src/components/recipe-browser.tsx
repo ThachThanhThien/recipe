@@ -1,270 +1,245 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { Search, SlidersHorizontal } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { RecipeCard } from "@/components/recipe-card";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { ChevronDown, SearchX, Star } from "lucide-react";
+import { RecipeGrid } from "@/components/recipe-card";
 import { EmptyState } from "@/components/empty-state";
-import { pickLocale } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
-import type { Recipe } from "@/lib/api";
+import { SearchField } from "@/components/search-field";
+import { ChipRow, buttonClass, chipClass } from "@/components/ui";
+import { useLang, useT } from "@/components/lang-provider";
+import { searchScore } from "@/lib/search";
+import type { Difficulty, RecipeSummary } from "@/lib/api";
 
-type SortKey = "newest" | "rating" | "fastest";
+const SORTS = ["newest", "quickest", "rating", "name"] as const;
+type SortKey = (typeof SORTS)[number];
+const DIFFICULTIES: Difficulty[] = ["Easy", "Medium", "Hard"];
 
-const SORT_OPTIONS: { value: SortKey; label: string }[] = [
-  { value: "newest", label: "Newest" },
-  { value: "rating", label: "Highest rated" },
-  { value: "fastest", label: "Quickest" },
-];
-
-function parseMinutes(input: string | null | undefined): number {
-  if (!input) return Number.POSITIVE_INFINITY;
-  const m = input.match(/\d+/);
-  return m ? parseInt(m[0], 10) : Number.POSITIVE_INFINITY;
+interface Filters {
+  query: string;
+  category: string | null;
+  featured: boolean;
+  difficulty: Difficulty | null;
+  sort: SortKey;
 }
+
+const DEFAULT_FILTERS: Filters = { query: "", category: null, featured: false, difficulty: null, sort: "newest" };
 
 interface RecipeBrowserProps {
-  recipes: Recipe[];
+  recipes: RecipeSummary[];
+  categories: string[];
 }
 
-export function RecipeBrowser({ recipes }: RecipeBrowserProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+/**
+ * Filters live in the URL (?q=&category=&featured=1&difficulty=&sort=) so they can be
+ * shared and survive Back. While the page loads, the full unfiltered grid is rendered
+ * as static HTML, so recipes show up before any JavaScript runs.
+ */
+export function RecipeBrowser(props: RecipeBrowserProps) {
+  return (
+    <Suspense fallback={<BrowserView {...props} filters={DEFAULT_FILTERS} />}>
+      <LiveBrowser {...props} />
+    </Suspense>
+  );
+}
+
+function LiveBrowser(props: RecipeBrowserProps) {
   const searchParams = useSearchParams();
+  const urlQuery = searchParams.get("q") ?? "";
 
-  const initialQuery = searchParams.get("q") ?? "";
-  const initialCategory = searchParams.get("category") ?? "All";
-  const initialFeatured = searchParams.get("featured") === "1";
-  const initialTrending = searchParams.get("trending") === "1";
+  // The input keeps its own copy so typing never lags behind the URL; it follows the
+  // URL when that changes from elsewhere (Back button, a link with ?q=).
+  const [query, setQuery] = useState(urlQuery);
+  const [seenUrlQuery, setSeenUrlQuery] = useState(urlQuery);
+  if (urlQuery !== seenUrlQuery) {
+    setSeenUrlQuery(urlQuery);
+    setQuery(urlQuery);
+  }
 
-  const [query, setQuery] = useState(initialQuery);
-  const [category, setCategory] = useState(initialCategory);
-  const [difficulty, setDifficulty] = useState<string>("All");
-  const [sortBy, setSortBy] = useState<SortKey>("newest");
-  const [featuredOnly, setFeaturedOnly] = useState(initialFeatured);
-  const [trendingOnly, setTrendingOnly] = useState(initialTrending);
+  const difficulty = searchParams.get("difficulty");
+  const sort = searchParams.get("sort");
+  const filters: Filters = {
+    query,
+    category: searchParams.get("category"),
+    featured: searchParams.get("featured") === "1",
+    difficulty: DIFFICULTIES.includes(difficulty as Difficulty) ? (difficulty as Difficulty) : null,
+    sort: SORTS.includes(sort as SortKey) ? (sort as SortKey) : "newest",
+  };
 
-  useEffect(() => {
-    setQuery(searchParams.get("q") ?? "");
-    setCategory(searchParams.get("category") ?? "All");
-    setFeaturedOnly(searchParams.get("featured") === "1");
-    setTrendingOnly(searchParams.get("trending") === "1");
-  }, [searchParams]);
-
-  const categories = useMemo(() => {
-    const set = new Set<string>();
-    recipes.forEach((r) => {
-      if (r.category) set.add(r.category);
-    });
-    return ["All", ...Array.from(set).sort()];
-  }, [recipes]);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return recipes
-      .filter((r) => {
-        const title = pickLocale(r.title).toLowerCase();
-        const desc = pickLocale(r.description).toLowerCase();
-        const tagMatch = (r.tags ?? []).some((t) => t.toLowerCase().includes(q));
-        const matchesQ = !q || title.includes(q) || desc.includes(q) || tagMatch;
-        const matchesCat = category === "All" || r.category === category;
-        const matchesDiff = difficulty === "All" || r.difficulty === difficulty;
-        const matchesFeatured = !featuredOnly || r.isFeatured;
-        const matchesTrending = !trendingOnly || r.isTrending;
-        return matchesQ && matchesCat && matchesDiff && matchesFeatured && matchesTrending;
-      })
-      .sort((a, b) => {
-        if (sortBy === "rating") return (b.rating ?? 0) - (a.rating ?? 0);
-        if (sortBy === "fastest") return parseMinutes(a.prepTime) - parseMinutes(b.prepTime);
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
-  }, [recipes, query, category, difficulty, sortBy, featuredOnly, trendingOnly]);
-
-  const updateUrl = (patch: Record<string, string | null>) => {
+  const setParams = (patch: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
-    for (const [k, v] of Object.entries(patch)) {
-      if (v === null || v === "") params.delete(k);
-      else params.set(k, v);
+    for (const [key, value] of Object.entries(patch)) {
+      if (value) params.set(key, value);
+      else params.delete(key);
     }
     const qs = params.toString();
-    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    // Next.js keeps useSearchParams in sync with history.replaceState — no navigation needed.
+    window.history.replaceState(null, "", qs ? `${window.location.pathname}?${qs}` : window.location.pathname);
   };
 
-  const clearFilters = () => {
-    setQuery("");
-    setCategory("All");
-    setDifficulty("All");
-    setFeaturedOnly(false);
-    setTrendingOnly(false);
-    router.replace(pathname, { scroll: false });
-  };
+  return (
+    <BrowserView
+      {...props}
+      filters={filters}
+      onQuery={(value) => {
+        setQuery(value);
+        setParams({ q: value.trim() ? value : null });
+      }}
+      onChange={setParams}
+      onClear={() => {
+        setQuery("");
+        window.history.replaceState(null, "", window.location.pathname);
+      }}
+    />
+  );
+}
 
-  const activeFilterCount = [
-    query ? 1 : 0,
-    category !== "All" ? 1 : 0,
-    difficulty !== "All" ? 1 : 0,
-    featuredOnly ? 1 : 0,
-    trendingOnly ? 1 : 0,
-  ].reduce((a, b) => a + b, 0);
+interface BrowserViewProps extends RecipeBrowserProps {
+  filters: Filters;
+  onQuery?: (value: string) => void;
+  onChange?: (patch: Record<string, string | null>) => void;
+  onClear?: () => void;
+}
+
+function BrowserView({ recipes, categories, filters, onQuery, onChange, onClear }: BrowserViewProps) {
+  const t = useT();
+  const lang = useLang();
+  const { query, category, featured, difficulty, sort } = filters;
+  const change = (patch: Record<string, string | null>) => onChange?.(patch);
+
+  const results = useMemo(() => {
+    const list = recipes
+      .filter(
+        (r) =>
+          (!category || r.category === category) &&
+          (!featured || r.isFeatured) &&
+          (!difficulty || r.difficulty === difficulty),
+      )
+      .map((recipe) => ({ recipe, score: searchScore(recipe.searchTitle, recipe.search, query) }))
+      .filter((r) => r.score > 0);
+    if (sort === "quickest") list.sort((a, b) => (a.recipe.minutes ?? Infinity) - (b.recipe.minutes ?? Infinity));
+    if (sort === "rating") list.sort((a, b) => b.recipe.rating - a.recipe.rating);
+    if (sort === "name") list.sort((a, b) => a.recipe.title.localeCompare(b.recipe.title, lang));
+    // "newest" is the order recipes arrive in. Best matches first; the sort orders ties.
+    list.sort((a, b) => b.score - a.score);
+    return list.map((r) => r.recipe);
+  }, [recipes, category, featured, difficulty, query, sort, lang]);
+
+  const filtered = Boolean(query.trim() || category || featured || difficulty);
 
   return (
     <>
-      <div className="bg-card/70 backdrop-blur-md border border-border/40 p-4 rounded-3xl mb-8 flex flex-col md:flex-row gap-3 items-stretch shadow-sm sticky top-20 z-30">
-        <div className="relative flex-grow">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-          <input
-            type="search"
-            placeholder="Search by name, description, or tag..."
-            aria-label="Search recipes"
-            className="w-full bg-secondary/40 rounded-2xl pl-12 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              updateUrl({ q: e.target.value || null });
-            }}
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <select
-            aria-label="Sort recipes"
-            className="bg-secondary/40 rounded-2xl px-4 py-3 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortKey)}
-          >
-            {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                Sort: {opt.label}
-              </option>
-            ))}
-          </select>
-
-          <select
-            aria-label="Filter by difficulty"
-            className="bg-secondary/40 rounded-2xl px-4 py-3 font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-          >
-            <option value="All">Any difficulty</option>
-            <option value="Easy">Easy</option>
-            <option value="Medium">Medium</option>
-            <option value="Hard">Hard</option>
-          </select>
-
-          {activeFilterCount > 0 && (
-            <button
-              type="button"
-              onClick={clearFilters}
-              className="bg-secondary/40 hover:bg-secondary text-foreground/80 hover:text-foreground px-4 py-3 rounded-2xl font-bold text-sm flex items-center gap-2 transition-colors"
-            >
-              <SlidersHorizontal size={14} /> Clear ({activeFilterCount})
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2 mb-8">
-        <span className="text-xs uppercase tracking-widest font-bold text-muted-foreground mr-2">
-          Categories:
-        </span>
-        {categories.map((cat) => (
+      <div className="sticky top-14 z-30 -mx-4 bg-background/90 px-4 pb-3 pt-1 backdrop-blur-lg sm:-mx-6 sm:px-6 md:top-16">
+        <SearchField
+          value={query}
+          onValueChange={(value) => onQuery?.(value)}
+          placeholder={t("recipes.searchPlaceholder")}
+        />
+        <ChipRow className="mt-3" label={t("recipes.categories")}>
           <button
-            key={cat}
             type="button"
-            onClick={() => {
-              setCategory(cat);
-              updateUrl({ category: cat === "All" ? null : cat });
-            }}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-semibold transition-all border",
-              category === cat
-                ? "bg-primary border-primary text-white shadow-sm"
-                : "bg-card border-border/60 hover:border-primary/40 text-foreground/80",
-            )}
+            aria-pressed={!category && !featured}
+            onClick={() => change({ category: null, featured: null })}
+            className={chipClass(!category && !featured)}
           >
-            {cat}
+            {t("recipes.all")}
           </button>
-        ))}
+          <button
+            type="button"
+            aria-pressed={featured}
+            onClick={() => change({ featured: featured ? null : "1" })}
+            className={chipClass(featured)}
+          >
+            <Star size={14} className={featured ? "fill-current" : undefined} aria-hidden />
+            {t("recipes.featured")}
+          </button>
+          {categories.map((c) => (
+            <button
+              key={c}
+              type="button"
+              aria-pressed={category === c}
+              onClick={() => change({ category: category === c ? null : c })}
+              className={chipClass(category === c)}
+            >
+              {c}
+            </button>
+          ))}
+        </ChipRow>
+      </div>
 
-        <div className="ml-auto flex gap-2 flex-wrap">
-          <FilterChip
-            active={featuredOnly}
-            onClick={() => {
-              const next = !featuredOnly;
-              setFeaturedOnly(next);
-              updateUrl({ featured: next ? "1" : null });
-            }}
-          >
-            ★ Featured
-          </FilterChip>
-          <FilterChip
-            active={trendingOnly}
-            onClick={() => {
-              const next = !trendingOnly;
-              setTrendingOnly(next);
-              updateUrl({ trending: next ? "1" : null });
-            }}
-          >
-            🔥 Trending
-          </FilterChip>
+      <div className="mb-5 mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          {results.length === 1 ? t("recipes.count.one") : t("recipes.count.other", { n: results.length })}
+        </p>
+        <div className="flex items-center gap-2">
+          <Select
+            label={t("recipes.difficulty")}
+            value={difficulty ?? ""}
+            onChange={(value) => change({ difficulty: value || null })}
+            options={[
+              { value: "", label: t("recipes.anyLevel") },
+              ...DIFFICULTIES.map((d) => ({ value: d, label: t(`difficulty.${d}`) })),
+            ]}
+          />
+          <Select
+            label={t("recipes.sort")}
+            value={sort}
+            onChange={(value) => change({ sort: value === "newest" ? null : value })}
+            options={SORTS.map((s) => ({ value: s, label: t(`recipes.sort.${s}`) }))}
+          />
         </div>
       </div>
 
-      <p className="text-sm text-muted-foreground mb-6" aria-live="polite">
-        Showing <strong className="text-foreground">{filtered.length}</strong> of{" "}
-        <strong className="text-foreground">{recipes.length}</strong> recipes
-      </p>
-
-      <AnimatePresence mode="popLayout">
-        {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map((recipe, i) => (
-              <RecipeCard key={recipe.id} recipe={recipe} index={i} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            icon="🔍"
-            title="No recipes found"
-            description="Try adjusting your search or clearing the filters."
-            action={
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="mt-4 bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-primary/90 transition-colors"
-              >
-                Clear filters
+      {results.length > 0 ? (
+        <RecipeGrid recipes={results} priorityCount={4} />
+      ) : (
+        <EmptyState
+          icon={SearchX}
+          title={t("recipes.noResultsTitle")}
+          description={t("recipes.noResultsDesc")}
+          action={
+            filtered && (
+              <button type="button" onClick={() => onClear?.()} className={buttonClass("secondary")}>
+                {t("recipes.clear")}
               </button>
-            }
-          />
-        )}
-      </AnimatePresence>
+            )
+          }
+        />
+      )}
     </>
   );
 }
 
-function FilterChip({
-  active,
-  onClick,
-  children,
+function Select({
+  label,
+  value,
+  onChange,
+  options,
 }: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "px-4 py-1.5 rounded-full text-sm font-semibold transition-all border",
-        active
-          ? "bg-primary border-primary text-white shadow-sm"
-          : "bg-card border-border/60 hover:border-primary/40 text-foreground/80",
-      )}
-    >
-      {children}
-    </button>
+    <label className="relative">
+      <span className="sr-only">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="h-10 cursor-pointer appearance-none rounded-lg border border-border bg-card pl-3 pr-8 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        size={16}
+        aria-hidden
+        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground"
+      />
+    </label>
   );
 }

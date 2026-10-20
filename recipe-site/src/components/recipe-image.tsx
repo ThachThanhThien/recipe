@@ -24,12 +24,15 @@ export function RecipeImage({ src, alt, seed, fill = true, className, priority, 
   if (showFallback) {
     return (
       <div
-        className={cn("relative flex items-center justify-center overflow-hidden", className)}
+        className={cn(
+          "flex items-center justify-center overflow-hidden",
+          fill ? "absolute inset-0" : "relative h-full w-full",
+          className,
+        )}
         style={{ background: fallbackGradient(seed) }}
-        aria-label={alt}
-        role="img"
+        {...(alt ? { role: "img", "aria-label": alt } : { "aria-hidden": true })}
       >
-        <ChefHat className="w-16 h-16 text-white/60" strokeWidth={1.5} />
+        <ChefHat className="size-1/4 max-h-16 max-w-16 text-white/70" strokeWidth={1.5} />
       </div>
     );
   }

@@ -2,15 +2,8 @@ import type { MetadataRoute } from "next";
 import { getRecipes } from "@/lib/api";
 import { SITE_URL } from "@/lib/seo";
 
-export const revalidate = 3600;
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let recipes: Awaited<ReturnType<typeof getRecipes>> = [];
-  try {
-    recipes = await getRecipes();
-  } catch {
-    recipes = [];
-  }
+  const recipes = await getRecipes();
 
   const now = new Date();
   const staticRoutes: MetadataRoute.Sitemap = [

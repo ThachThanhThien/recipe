@@ -49,6 +49,6 @@ export class RecipeList implements OnInit {
   }
 
   getIngredientCount(recipe: RecipeModel): number {
-    return recipe.recipeIngredients?.length || 0;
+    return recipe.ingredients?.length || 0;
   }
 }

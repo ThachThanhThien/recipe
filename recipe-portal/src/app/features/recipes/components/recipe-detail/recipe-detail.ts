@@ -140,13 +140,11 @@ export class RecipeDetail extends AppComponentBase implements OnChanges, OnInit 
         });
 
         this.ingredientsArray.clear();
-        if (data.recipeIngredients && data.recipeIngredients.length > 0) {
-          for (const ri of data.recipeIngredients) {
-            this.ingredientsArray.push(this.fb.group({
-              ingredientId: [ri.ingredient?.id || 0, Validators.required],
-              quantity: [ri.quantity || '', Validators.required]
-            }));
-          }
+        for (const item of data.ingredients ?? []) {
+          this.ingredientsArray.push(this.fb.group({
+            ingredientId: [item.ingredientId || 0, Validators.required],
+            quantity: [item.quantity || '', Validators.required]
+          }));
         }
       },
       error: () => {
@@ -203,7 +201,7 @@ export class RecipeDetail extends AppComponentBase implements OnChanges, OnInit 
 
     request$.subscribe({
       next: () => {
-        this.showSuccess('Success', 'Saved successfully');
+        this.showSuccess('Saved', 'The public site updates in about a minute.');
         this.onSaved.emit();
         this.resetForm();
       },

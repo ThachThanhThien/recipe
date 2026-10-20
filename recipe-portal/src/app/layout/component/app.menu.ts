@@ -37,6 +37,12 @@ export class AppMenu {
         items: [
           { label: 'Recipe', icon: 'pi pi-fw pi-book', routerLink: ['/recipes'] },
         ]
+      },
+      {
+        label: 'Settings',
+        items: [
+          { label: 'GitHub connection', icon: 'pi pi-fw pi-github', routerLink: ['/connect'] },
+        ]
       }
     ];
   }

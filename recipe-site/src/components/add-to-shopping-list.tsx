@@ -1,56 +1,42 @@
 "use client";
 
 import { useState } from "react";
-import { ShoppingBasket, Check } from "lucide-react";
 import Link from "next/link";
+import { Check, ShoppingBasket } from "lucide-react";
 import { useShoppingList } from "@/hooks/use-shopping-list";
-import { pickLocale } from "@/lib/i18n";
-import type { Recipe } from "@/lib/api";
+import { useRecipeSession } from "@/components/recipe-session";
+import { useT } from "@/components/lang-provider";
+import { buttonClass } from "@/components/ui";
+import { cn } from "@/lib/utils";
 
-interface AddToShoppingListProps {
-  recipe: Recipe;
-  scaledIngredients: { name: string; quantity: string; unit: string }[];
-}
-
-export function AddToShoppingList({ recipe, scaledIngredients }: AddToShoppingListProps) {
+export function AddToShoppingList() {
+  const t = useT();
+  const { recipeId, title, ingredients } = useRecipeSession();
   const { addMany } = useShoppingList();
   const [justAdded, setJustAdded] = useState(false);
 
   const onAdd = () => {
-    if (scaledIngredients.length === 0) return;
-    addMany(recipe.id, pickLocale(recipe.title, undefined, "Recipe"), scaledIngredients);
+    addMany(recipeId, title, ingredients);
     setJustAdded(true);
-    window.setTimeout(() => setJustAdded(false), 2500);
+    window.setTimeout(() => setJustAdded(false), 4000);
   };
 
-  if (justAdded) {
-    return (
-      <div className="space-y-3">
-        <button
-          type="button"
-          disabled
-          className="w-full bg-accent text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2"
-        >
-          <Check size={18} /> Added to shopping list
-        </button>
-        <Link
-          href="/shopping-list"
-          className="block text-center text-sm font-semibold text-primary hover:underline"
-        >
-          View shopping list →
-        </Link>
-      </div>
-    );
-  }
-
   return (
-    <button
-      type="button"
-      onClick={onAdd}
-      disabled={scaledIngredients.length === 0}
-      className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-2xl font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-    >
-      <ShoppingBasket size={18} /> Add to shopping list
-    </button>
+    <div className="flex gap-2">
+      <button
+        type="button"
+        onClick={onAdd}
+        disabled={ingredients.length === 0}
+        className={cn(buttonClass("secondary"), "flex-1", justAdded && "border-success text-success")}
+      >
+        {justAdded ? <Check size={18} /> : <ShoppingBasket size={18} />}
+        <span aria-live="polite">{justAdded ? t("detail.addedToList") : t("detail.addToList")}</span>
+      </button>
+      {justAdded && (
+        <Link href="/shopping-list" className={buttonClass("ghost")}>
+          {t("detail.viewList")}
+        </Link>
+      )}
+    </div>
   );
 }

@@ -15,3 +15,12 @@ export function scaleQuantity(quantity: string, factor: number): string {
     return String(rounded);
   });
 }
+
+/**
+ * Display text for an amount. Most quantities already carry their unit ("2 kg",
+ * "1 stick"); the ingredient's default unit is only added after a bare number ("2").
+ */
+export function formatAmount(quantity: string, unit: string | null | undefined): string {
+  const bareNumber = !/[^\d\s.,/½¼¾⅓⅔-]/.test(quantity);
+  return bareNumber && unit ? `${quantity} ${unit}`.trim() : quantity;
+}

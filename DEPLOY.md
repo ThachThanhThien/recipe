@@ -1,82 +1,52 @@
 # Deployment Guide
 
-This repo has three apps. Each goes to a different free host:
+There is no server to run. Recipes live as JSON files in this repo, and everything is served as static files from free hosts:
 
-| App | Host | URL pattern |
+| Piece | Where | What it does |
 | --- | --- | --- |
-| `recipe-api` (NestJS) | Render.com | `https://recipe-api-xxxx.onrender.com` |
-| `recipe-portal` (Angular admin) | GitHub Pages | `https://thachthanhthien.github.io/recipe/` |
-| `recipe-site` (Next.js public) | Vercel | `https://recipe-site-xxxx.vercel.app` |
+| `recipe-site/data/*.json` | this GitHub repo | The recipes, ingredients and ingredient types. Every edit is a commit, so you get history and undo for free. |
+| `recipe-site` (Next.js public site) | Vercel | Pre-renders every page (both languages) to static HTML at build time. Rebuilds on every push to `main`. |
+| `recipe-portal` (Angular admin) | GitHub Pages | Reads and commits the JSON files through the GitHub API, using a token you paste in once per browser. |
+| Recipe photos | `recipe-site/public/uploads/` | The portal shrinks each photo in the browser and commits it; the site serves it as `/uploads/<file>`. |
 
-Do the steps in order — the API URL is needed by the other two.
+Saving in the portal takes ~1 second; the public site shows the change after Vercel's rebuild (~1 minute).
 
----
-
-## 1. Deploy the API to Render
-
-The repo already contains `render.yaml`. Render reads it automatically.
-
-1. Sign up at <https://render.com> with your GitHub account.
-2. Dashboard → **New +** → **Blueprint**.
-3. Connect this repo (`ThachThanhThien/recipe`). Render detects `render.yaml` and proposes `recipe-api` as a web service.
-4. Click **Apply**. First deploy takes ~5 minutes.
-5. After it's live, note the URL (looks like `https://recipe-api-xxxx.onrender.com`).
-6. Open the service → **Environment** → set:
-   - `CORS_ORIGINS` = `https://thachthanhthien.github.io,https://recipe-site-xxxx.vercel.app`
-     (use the actual Vercel URL once step 3 is done; you can come back and edit this)
-7. Verify: open `https://recipe-api-xxxx.onrender.com/health` — should return JSON with `"status":"ok"`.
-8. Browse Swagger at `https://recipe-api-xxxx.onrender.com/api`.
-
-> **Free-tier caveats:**
-> - The service **sleeps after ~15 min** of no traffic. First request after sleep takes ~30 s.
-> - The filesystem is **ephemeral** — uploaded images and DB writes are lost on redeploy or restart. Committed `recipe.db` / `cooking.db` act as the starter dataset.
-> - For real persistence, add a $1/mo Render disk and point `recipe.db` + `uploads/` at it.
+> `recipe-api/` (NestJS + SQLite) and `render.yaml` are no longer used. `recipe-site/data/` was exported from `recipe-api/recipe.db`.
 
 ---
 
-## 2. Deploy the Angular admin to GitHub Pages
-
-The workflow at `.github/workflows/deploy-portal.yml` is ready. You need to:
-
-1. In the GitHub repo → **Settings** → **Pages** → set **Source** to **GitHub Actions**.
-2. **Settings** → **Secrets and variables** → **Actions** → **Variables** tab → **New repository variable**:
-   - Name: `API_BASE_URL`
-   - Value: the Render URL from step 1 (e.g. `https://recipe-api-xxxx.onrender.com`)
-3. Trigger a deploy:
-   - Either push any change under `recipe-portal/` to `main`, or
-   - Go to **Actions** → "Deploy Angular Portal to GitHub Pages" → **Run workflow**.
-4. After it succeeds, the admin is live at `https://thachthanhthien.github.io/recipe/`.
-
-> If you ever rename the repo, also update the `--base-href "/recipe/"` flag in the workflow.
-
----
-
-## 3. Deploy the Next.js site to Vercel
+## 1. Deploy the site to Vercel
 
 1. Sign up at <https://vercel.com> with your GitHub account.
 2. **Add New** → **Project** → import `ThachThanhThien/recipe`.
-3. In the import screen:
-   - **Root Directory** → click **Edit** → select `recipe-site`.
-   - **Framework Preset** → Next.js (auto-detected).
-   - **Build & Output Settings** → leave defaults.
-4. Expand **Environment Variables** and add (see `recipe-site/.env.example`):
-   - `NEXT_PUBLIC_API_BASE_URL` = Render URL from step 1
-   - `NEXT_PUBLIC_SITE_URL` = leave blank for now, fill after first deploy
+3. **Root Directory** → `recipe-site`. Framework preset: Next.js (auto-detected).
+4. **Environment Variables**:
+   - `NEXT_PUBLIC_SITE_URL` = the site's URL (fill in after the first deploy, then redeploy). Used for the sitemap and share previews.
    - `NEXT_PUBLIC_DEFAULT_LANG` = `en`
-5. Click **Deploy**. First build takes ~3 minutes.
-6. Note the Vercel URL (e.g. `https://recipe-site-xxxx.vercel.app`).
-7. Go back to Vercel project → **Settings** → **Environment Variables** → set `NEXT_PUBLIC_SITE_URL` to that URL → **Redeploy**.
-8. Go back to **Render** → `recipe-api` → **Environment** → update `CORS_ORIGINS` to include the Vercel URL → save (auto-redeploys).
+   - `NEXT_PUBLIC_API_BASE_URL` is no longer used and can be deleted.
+5. **Deploy**.
 
----
+Language: URLs stay clean (`/recipes/12`). `next.config.ts` serves the Vietnamese or English version based on the `lang` cookie set by the language switcher; `/vi/...` and `/en/...` also work directly.
 
-## 4. Verify end-to-end
+## 2. Deploy the admin portal to GitHub Pages
 
-- `https://thachthanhthien.github.io/recipe/` loads, ingredient/recipe lists fetch from the API.
-- `https://recipe-site-xxxx.vercel.app` loads, recipes display, images render.
-- `https://recipe-api-xxxx.onrender.com/health` returns `{"status":"ok"}`.
+1. Repo → **Settings** → **Pages** → **Source** = **GitHub Actions**.
+2. Push any change under `recipe-portal/` to `main`, or **Actions** → "Deploy Angular Portal to GitHub Pages" → **Run workflow**.
+3. It's live at `https://thachthanhthien.github.io/recipe/`.
 
-If the admin shows CORS errors in the browser console, double-check `CORS_ORIGINS` on Render contains the exact Pages URL **without trailing slash**.
+The repo it edits is set in `recipe-portal/src/environments/environment*.ts` (`owner`, `repo`, `branch`). The old `API_BASE_URL` repository variable is no longer needed.
+
+> If you ever rename the repo, update those files and the `--base-href "/recipe/"` flag in the workflow.
+
+## 3. Connect the portal to GitHub (once per browser)
+
+1. Create a **fine-grained personal access token**: <https://github.com/settings/personal-access-tokens/new>
+   - Repository access → **Only select repositories** → `recipe`
+   - Repository permissions → **Contents: Read and write** (nothing else)
+   - Pick an expiry you're comfortable with; when it expires the portal asks for a new one.
+2. Open the portal → **Settings → GitHub connection** → paste the token → **Connect**.
+
+The token is stored only in that browser's `localStorage`. Without a token the portal shows only the connect page and can't change anything (the recipe data itself is public, like the repo and the site). Use **Disconnect this browser** on shared computers.
 
 ---
 
@@ -84,8 +54,16 @@ If the admin shows CORS errors in the browser console, double-check `CORS_ORIGIN
 
 | Change | Effect |
 | --- | --- |
-| Push to `main` touching `recipe-portal/**` | Pages auto-rebuilds and redeploys |
-| Push to `main` touching `recipe-site/**` | Vercel auto-rebuilds and redeploys |
-| Push to `main` touching `recipe-api/**` | Render auto-rebuilds and redeploys (DB resets) |
-| Change `API_BASE_URL` variable on GitHub | Re-run the Pages workflow manually |
-| Change env vars on Vercel / Render | Trigger a redeploy from their dashboards |
+| Save in the portal | Commits to `main` → Vercel rebuilds the site (~1 min) |
+| Edit `recipe-site/data/*.json` directly (GitHub web editor or locally) | Same as above — the portal picks it up on next load |
+| Push to `main` touching `recipe-portal/**` | Pages rebuilds the portal |
+| Push to `main` touching `recipe-site/**` | Vercel rebuilds the site |
+
+## Running locally
+
+```bash
+npm --prefix recipe-site run dev     # http://localhost:3002, reads recipe-site/data/*.json
+npm --prefix recipe-portal start     # http://localhost:4200, edits the GitHub repo (needs a token)
+```
+
+The local portal commits to the real repo on GitHub. Run `git pull` to see those edits in your local site.

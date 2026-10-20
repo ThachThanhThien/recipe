@@ -1,0 +1,2862 @@
+[
+  {
+    "id": 216,
+    "name": {
+      "en": "Broccoli",
+      "vi": "Bông cải xanh"
+    },
+    "description": null,
+    "unit": "head",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 217,
+    "name": {
+      "en": "Spinach",
+      "vi": "Cải bó xôi"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 218,
+    "name": {
+      "en": "Bell Pepper",
+      "vi": "Ớt chuông"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 219,
+    "name": {
+      "en": "Tomato",
+      "vi": "Cà chua"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 220,
+    "name": {
+      "en": "Potato",
+      "vi": "Khoai tây"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 221,
+    "name": {
+      "en": "Cabbage",
+      "vi": "Bắp cải"
+    },
+    "description": null,
+    "unit": "head",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 222,
+    "name": {
+      "en": "Onion",
+      "vi": "Hành tây"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 223,
+    "name": {
+      "en": "Garlic",
+      "vi": "Tỏi"
+    },
+    "description": null,
+    "unit": "clove",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 224,
+    "name": {
+      "en": "Cucumber",
+      "vi": "Dưa leo"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 225,
+    "name": {
+      "en": "Asparagus",
+      "vi": "Măng tây"
+    },
+    "description": null,
+    "unit": "bunch",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 226,
+    "name": {
+      "en": "Cauliflower",
+      "vi": "Súp lơ trắng"
+    },
+    "description": null,
+    "unit": "head",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 227,
+    "name": {
+      "en": "Apple",
+      "vi": "Táo"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 228,
+    "name": {
+      "en": "Eggplant",
+      "vi": "Cà tím"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 229,
+    "name": {
+      "en": "Orange",
+      "vi": "Cam"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 230,
+    "name": {
+      "en": "Strawberry",
+      "vi": "Dâu tây"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 231,
+    "name": {
+      "en": "Blueberry",
+      "vi": "Việt quất"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 232,
+    "name": {
+      "en": "Kale",
+      "vi": "Cải xoăn"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 233,
+    "name": {
+      "en": "Pineapple",
+      "vi": "Dứa"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 234,
+    "name": {
+      "en": "Grapes",
+      "vi": "Nho"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 235,
+    "name": {
+      "en": "Banana",
+      "vi": "Chuối"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 236,
+    "name": {
+      "en": "Peach",
+      "vi": "Đào"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 237,
+    "name": {
+      "en": "Lemon",
+      "vi": "Chanh vàng"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 238,
+    "name": {
+      "en": "Lime",
+      "vi": "Chanh xanh"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 239,
+    "name": {
+      "en": "Watermelon",
+      "vi": "Dưa hấu"
+    },
+    "description": null,
+    "unit": "slice",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 240,
+    "name": {
+      "en": "Milk",
+      "vi": "Sữa"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 241,
+    "name": {
+      "en": "Cheese",
+      "vi": "Phô mai"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 242,
+    "name": {
+      "en": "Yogurt",
+      "vi": "Sữa chua"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 243,
+    "name": {
+      "en": "Butter",
+      "vi": "Bơ sữa"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 244,
+    "name": {
+      "en": "Zucchini",
+      "vi": "Bí ngòi"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 245,
+    "name": {
+      "en": "Sour Cream",
+      "vi": "Kem chua"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 246,
+    "name": {
+      "en": "Avocado",
+      "vi": "Bơ"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 247,
+    "name": {
+      "en": "Mango",
+      "vi": "Xoài"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 248,
+    "name": {
+      "en": "Cream",
+      "vi": "Kem tươi"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 249,
+    "name": {
+      "en": "Bacon",
+      "vi": "Thịt xông khói"
+    },
+    "description": null,
+    "unit": "slice",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 250,
+    "name": {
+      "en": "Ground Beef",
+      "vi": "Thịt bò xay"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 251,
+    "name": {
+      "en": "Lamb",
+      "vi": "Thịt cừu"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 252,
+    "name": {
+      "en": "Turkey",
+      "vi": "Thịt gà tây"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 253,
+    "name": {
+      "en": "Salmon",
+      "vi": "Cá hồi"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 254,
+    "name": {
+      "en": "Chicken Breast",
+      "vi": "Ức gà"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 255,
+    "name": {
+      "en": "Beef Steak",
+      "vi": "Thịt bò bít tết"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 256,
+    "name": {
+      "en": "Pork Chops",
+      "vi": "Sườn heo"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 257,
+    "name": {
+      "en": "Mackerel",
+      "vi": "Cá thu"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 258,
+    "name": {
+      "en": "Scallops",
+      "vi": "Sò điệp"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 259,
+    "name": {
+      "en": "Shrimp",
+      "vi": "Tôm"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 260,
+    "name": {
+      "en": "Crab",
+      "vi": "Cua"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 261,
+    "name": {
+      "en": "Cumin",
+      "vi": "Thì là Ai Cập"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 262,
+    "name": {
+      "en": "Turmeric",
+      "vi": "Nghệ"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 263,
+    "name": {
+      "en": "Black Pepper",
+      "vi": "Tiêu đen"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 264,
+    "name": {
+      "en": "Chili Powder",
+      "vi": "Ớt bột"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 265,
+    "name": {
+      "en": "Cinnamon",
+      "vi": "Quế"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 266,
+    "name": {
+      "en": "Ginger Powder",
+      "vi": "Bột gừng"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 267,
+    "name": {
+      "en": "Oregano",
+      "vi": "Lá kinh giới cay"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 268,
+    "name": {
+      "en": "Tuna",
+      "vi": "Cá ngừ"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 269,
+    "name": {
+      "en": "Rice",
+      "vi": "Gạo"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 270,
+    "name": {
+      "en": "Paprika",
+      "vi": "Ớt bột Paprika"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 271,
+    "name": {
+      "en": "Oats",
+      "vi": "Yến mạch"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 272,
+    "name": {
+      "en": "Barley",
+      "vi": "Đại mạch"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 273,
+    "name": {
+      "en": "Couscous",
+      "vi": "Hạt Couscous"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 274,
+    "name": {
+      "en": "Quinoa",
+      "vi": "Hạt diêm mạch"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 275,
+    "name": {
+      "en": "Almonds",
+      "vi": "Hạnh nhân"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 276,
+    "name": {
+      "en": "Salt",
+      "vi": "Muối"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 277,
+    "name": {
+      "en": "Chia Seeds",
+      "vi": "Hạt chia"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 278,
+    "name": {
+      "en": "Sesame Seeds",
+      "vi": "Hạt mè"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 279,
+    "name": {
+      "en": "Thyme",
+      "vi": "Cỏ xạ hương"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 280,
+    "name": {
+      "en": "Olive Oil",
+      "vi": "Dầu ô liu"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      63
+    ],
+    "isActive": true
+  },
+  {
+    "id": 281,
+    "name": {
+      "en": "Coconut Oil",
+      "vi": "Dầu dừa"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      63
+    ],
+    "isActive": true
+  },
+  {
+    "id": 282,
+    "name": {
+      "en": "Vegetable Oil",
+      "vi": "Dầu thực vật"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      63
+    ],
+    "isActive": true
+  },
+  {
+    "id": 283,
+    "name": {
+      "en": "Sesame Oil",
+      "vi": "Dầu mè"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      63
+    ],
+    "isActive": true
+  },
+  {
+    "id": 284,
+    "name": {
+      "en": "Walnuts",
+      "vi": "Quả óc chó"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 285,
+    "name": {
+      "en": "Lentils",
+      "vi": "Đậu lăng"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 286,
+    "name": {
+      "en": "Wheat Flour",
+      "vi": "Bột mì"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 287,
+    "name": {
+      "en": "Soybeans",
+      "vi": "Đậu nành"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 288,
+    "name": {
+      "en": "Chickpeas",
+      "vi": "Đậu gà"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 289,
+    "name": {
+      "en": "Parsley",
+      "vi": "Ngò tây"
+    },
+    "description": null,
+    "unit": "sprig",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 290,
+    "name": {
+      "en": "Black Beans",
+      "vi": "Đậu đen"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 291,
+    "name": {
+      "en": "Pumpkin Seeds",
+      "vi": "Hạt bí"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 292,
+    "name": {
+      "en": "Rosemary",
+      "vi": "Hương thảo"
+    },
+    "description": null,
+    "unit": "sprig",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 293,
+    "name": {
+      "en": "Sugar",
+      "vi": "Đường"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 294,
+    "name": {
+      "en": "Honey",
+      "vi": "Mật ong"
+    },
+    "description": null,
+    "unit": "tbsp",
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 295,
+    "name": {
+      "en": "Maple Syrup",
+      "vi": "Siro phong"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 296,
+    "name": {
+      "en": "Stevia",
+      "vi": "Cỏ ngọt"
+    },
+    "description": null,
+    "unit": "tsp",
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 297,
+    "name": {
+      "en": "Bread",
+      "vi": "Bánh mì"
+    },
+    "description": null,
+    "unit": "slice",
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 298,
+    "name": {
+      "en": "Tortillas",
+      "vi": "Bánh Tortilla"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 299,
+    "name": {
+      "en": "Baguette",
+      "vi": "Bánh mì Pháp"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 300,
+    "name": {
+      "en": "Water",
+      "vi": "Nước"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 301,
+    "name": {
+      "en": "Coffee",
+      "vi": "Cà phê"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 302,
+    "name": {
+      "en": "Mint",
+      "vi": "Bạc hà"
+    },
+    "description": null,
+    "unit": "leaf",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 303,
+    "name": {
+      "en": "Fruit Juice",
+      "vi": "Nước ép trái cây"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 304,
+    "name": {
+      "en": "Soy Sauce",
+      "vi": "Nước tương"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 305,
+    "name": {
+      "en": "Mayo",
+      "vi": "Xốt Mayonnaise"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 306,
+    "name": {
+      "en": "Mustard",
+      "vi": "Mù tạt"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 307,
+    "name": {
+      "en": "Cilantro",
+      "vi": "Ngò rí"
+    },
+    "description": null,
+    "unit": "sprig",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 308,
+    "name": {
+      "en": "Spaghetti",
+      "vi": "Mì Ý Spaghetti"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 309,
+    "name": {
+      "en": "Penne",
+      "vi": "Mì Penne"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 310,
+    "name": {
+      "en": "Basil",
+      "vi": "Húng quế"
+    },
+    "description": null,
+    "unit": "leaf",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 311,
+    "name": {
+      "en": "Ketchup",
+      "vi": "Tương cà"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 312,
+    "name": {
+      "en": "Tea",
+      "vi": "Trà"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 313,
+    "name": {
+      "en": "Radish",
+      "vi": "Củ cải"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      68
+    ],
+    "isActive": true
+  },
+  {
+    "id": 314,
+    "name": {
+      "en": "Shiitake",
+      "vi": "Nấm hương"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      69
+    ],
+    "isActive": true
+  },
+  {
+    "id": 315,
+    "name": {
+      "en": "Button Mushroom",
+      "vi": "Nấm mỡ"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      69
+    ],
+    "isActive": true
+  },
+  {
+    "id": 316,
+    "name": {
+      "en": "Chicken Egg",
+      "vi": "Trứng gà"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      73
+    ],
+    "isActive": true
+  },
+  {
+    "id": 317,
+    "name": {
+      "en": "Tomato Sauce",
+      "vi": "Xốt cà chua"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 318,
+    "name": {
+      "en": "Pesto",
+      "vi": "Xốt Pesto"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 319,
+    "name": {
+      "en": "Ginger",
+      "vi": "Gừng"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      68
+    ],
+    "isActive": true
+  },
+  {
+    "id": 320,
+    "name": {
+      "en": "Fusilli",
+      "vi": "Mì Fusilli"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 321,
+    "name": {
+      "en": "Sweet Potato",
+      "vi": "Khoai lang"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      68
+    ],
+    "isActive": true
+  },
+  {
+    "id": 322,
+    "name": {
+      "en": "Carrot",
+      "vi": "Cà rốt"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 323,
+    "name": {
+      "en": "Beef Bones",
+      "vi": "Xương bò"
+    },
+    "description": null,
+    "unit": "kg",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 324,
+    "name": {
+      "en": "Beef Brisket",
+      "vi": "Gầu bò"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 325,
+    "name": {
+      "en": "Rice Noodles (Pho)",
+      "vi": "Bánh phở"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 326,
+    "name": {
+      "en": "Fresh Ginger",
+      "vi": "Gừng tươi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 327,
+    "name": {
+      "en": "Star Anise",
+      "vi": "Hoa hồi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 328,
+    "name": {
+      "en": "Cloves",
+      "vi": "Đinh hương"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 329,
+    "name": {
+      "en": "Coriander Seeds",
+      "vi": "Hạt ngò"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 330,
+    "name": {
+      "en": "Fish Sauce",
+      "vi": "Nước mắm"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 331,
+    "name": {
+      "en": "Scallion",
+      "vi": "Hành lá"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 332,
+    "name": {
+      "en": "Bean Sprouts",
+      "vi": "Giá đỗ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 333,
+    "name": {
+      "en": "Pork Hock",
+      "vi": "Giò heo"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 334,
+    "name": {
+      "en": "Lemongrass",
+      "vi": "Sả"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 335,
+    "name": {
+      "en": "Shallot",
+      "vi": "Hành tím"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 336,
+    "name": {
+      "en": "Annatto Seeds",
+      "vi": "Hạt điều màu"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 337,
+    "name": {
+      "en": "Chili Paste",
+      "vi": "Sa tế"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 338,
+    "name": {
+      "en": "Round Rice Noodles",
+      "vi": "Bún to"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 339,
+    "name": {
+      "en": "Pork Belly",
+      "vi": "Thịt ba chỉ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 340,
+    "name": {
+      "en": "Ground Pork",
+      "vi": "Thịt heo xay"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 341,
+    "name": {
+      "en": "Rice Vermicelli",
+      "vi": "Bún tươi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 342,
+    "name": {
+      "en": "Oyster Sauce",
+      "vi": "Dầu hào"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 343,
+    "name": {
+      "en": "Green Papaya",
+      "vi": "Đu đủ xanh"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 344,
+    "name": {
+      "en": "Tofu",
+      "vi": "Đậu hũ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 345,
+    "name": {
+      "en": "Eggs",
+      "vi": "Trứng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      73
+    ],
+    "isActive": true
+  },
+  {
+    "id": 346,
+    "name": {
+      "en": "Tamarind Paste",
+      "vi": "Nước cốt me"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 347,
+    "name": {
+      "en": "Tomato Paste",
+      "vi": "Sốt cà chua đặc"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 348,
+    "name": {
+      "en": "Pork Shoulder",
+      "vi": "Thịt vai heo"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 349,
+    "name": {
+      "en": "Mi Quang Noodles",
+      "vi": "Mì Quảng tươi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 350,
+    "name": {
+      "en": "Peanuts",
+      "vi": "Đậu phộng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 351,
+    "name": {
+      "en": "Sesame Rice Cracker",
+      "vi": "Bánh tráng mè"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 352,
+    "name": {
+      "en": "Rice Paper",
+      "vi": "Bánh tráng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 353,
+    "name": {
+      "en": "Lettuce",
+      "vi": "Xà lách"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 354,
+    "name": {
+      "en": "Hoisin Sauce",
+      "vi": "Tương đen"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 355,
+    "name": {
+      "en": "Peanut Butter",
+      "vi": "Bơ đậu phộng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 356,
+    "name": {
+      "en": "Glass Noodles",
+      "vi": "Miến"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 357,
+    "name": {
+      "en": "Wood Ear Mushroom",
+      "vi": "Mộc nhĩ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      69
+    ],
+    "isActive": true
+  },
+  {
+    "id": 358,
+    "name": {
+      "en": "Pâté",
+      "vi": "Pa-tê"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 359,
+    "name": {
+      "en": "Daikon",
+      "vi": "Củ cải trắng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 360,
+    "name": {
+      "en": "Chili",
+      "vi": "Ớt tươi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 361,
+    "name": {
+      "en": "White Vinegar",
+      "vi": "Giấm trắng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 362,
+    "name": {
+      "en": "Five-Spice Powder",
+      "vi": "Ngũ vị hương"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 363,
+    "name": {
+      "en": "Rice Flour",
+      "vi": "Bột gạo"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 364,
+    "name": {
+      "en": "Cornstarch",
+      "vi": "Bột bắp"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 365,
+    "name": {
+      "en": "Coconut Milk",
+      "vi": "Nước cốt dừa"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 366,
+    "name": {
+      "en": "Broken Rice",
+      "vi": "Gạo tấm"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 367,
+    "name": {
+      "en": "Sticky Rice",
+      "vi": "Gạo nếp"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 368,
+    "name": {
+      "en": "Chinese Sausage",
+      "vi": "Lạp xưởng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 369,
+    "name": {
+      "en": "Pork Floss",
+      "vi": "Chà bông"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 370,
+    "name": {
+      "en": "Coconut Water",
+      "vi": "Nước dừa tươi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 371,
+    "name": {
+      "en": "Catfish",
+      "vi": "Cá tra"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 372,
+    "name": {
+      "en": "Rice Wine",
+      "vi": "Rượu nấu ăn"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 373,
+    "name": {
+      "en": "Okra",
+      "vi": "Đậu bắp"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 374,
+    "name": {
+      "en": "Celery",
+      "vi": "Cần tây"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 375,
+    "name": {
+      "en": "Tapioca Pearls",
+      "vi": "Hạt trân châu nhỏ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 376,
+    "name": {
+      "en": "Palm Sugar",
+      "vi": "Đường thốt nốt"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 377,
+    "name": {
+      "en": "Sweetened Condensed Milk",
+      "vi": "Sữa đặc"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 378,
+    "name": {
+      "en": "Ice",
+      "vi": "Đá viên"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 379,
+    "name": {
+      "en": "Guanciale",
+      "vi": "Guanciale"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 380,
+    "name": {
+      "en": "Pecorino Romano",
+      "vi": "Phô mai Pecorino Romano"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 381,
+    "name": {
+      "en": "Canned Tomatoes",
+      "vi": "Cà chua hộp"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 382,
+    "name": {
+      "en": "Red Wine",
+      "vi": "Rượu vang đỏ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 383,
+    "name": {
+      "en": "Bay Leaves",
+      "vi": "Lá nguyệt quế"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 384,
+    "name": {
+      "en": "Nutmeg",
+      "vi": "Nhục đậu khấu"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 385,
+    "name": {
+      "en": "Parmesan Cheese",
+      "vi": "Phô mai Parmesan"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 386,
+    "name": {
+      "en": "Active Dry Yeast",
+      "vi": "Men nở khô"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 387,
+    "name": {
+      "en": "Mozzarella Cheese",
+      "vi": "Phô mai Mozzarella"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 388,
+    "name": {
+      "en": "Linguine",
+      "vi": "Mì Linguine"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 389,
+    "name": {
+      "en": "Pine Nuts",
+      "vi": "Hạt thông"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 390,
+    "name": {
+      "en": "Green Beans",
+      "vi": "Đậu cô-ve"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 391,
+    "name": {
+      "en": "Mascarpone",
+      "vi": "Phô mai Mascarpone"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 392,
+    "name": {
+      "en": "Lady Fingers",
+      "vi": "Bánh quy Savoiardi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 393,
+    "name": {
+      "en": "Cocoa Powder",
+      "vi": "Bột cacao"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 394,
+    "name": {
+      "en": "Beef Stock",
+      "vi": "Nước dùng bò"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 395,
+    "name": {
+      "en": "Gruyère Cheese",
+      "vi": "Phô mai Gruyère"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 396,
+    "name": {
+      "en": "White Wine",
+      "vi": "Rượu vang trắng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 397,
+    "name": {
+      "en": "Pearl Onions",
+      "vi": "Hành ngọc trai"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 398,
+    "name": {
+      "en": "Yellow Squash",
+      "vi": "Bí vàng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 399,
+    "name": {
+      "en": "Egg Yolks",
+      "vi": "Lòng đỏ trứng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      73
+    ],
+    "isActive": true
+  },
+  {
+    "id": 400,
+    "name": {
+      "en": "Vanilla Bean",
+      "vi": "Vỏ vani"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 401,
+    "name": {
+      "en": "Burger Buns",
+      "vi": "Bánh mì Brioche burger"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 402,
+    "name": {
+      "en": "Cheddar Cheese",
+      "vi": "Phô mai Cheddar"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 403,
+    "name": {
+      "en": "Pickles",
+      "vi": "Dưa chuột muối"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 404,
+    "name": {
+      "en": "Chicken Wings",
+      "vi": "Cánh gà"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 405,
+    "name": {
+      "en": "Baking Powder",
+      "vi": "Bột nở"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 406,
+    "name": {
+      "en": "Brown Sugar",
+      "vi": "Đường nâu"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 407,
+    "name": {
+      "en": "Apple Cider Vinegar",
+      "vi": "Giấm táo"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 408,
+    "name": {
+      "en": "Worcestershire Sauce",
+      "vi": "Nước tương Worcestershire"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 409,
+    "name": {
+      "en": "Garlic Powder",
+      "vi": "Bột tỏi"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 410,
+    "name": {
+      "en": "Onion Powder",
+      "vi": "Bột hành"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 411,
+    "name": {
+      "en": "Romaine Lettuce",
+      "vi": "Xà lách Romaine"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 412,
+    "name": {
+      "en": "Anchovies",
+      "vi": "Cá cơm"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      62
+    ],
+    "isActive": true
+  },
+  {
+    "id": 413,
+    "name": {
+      "en": "Buttermilk",
+      "vi": "Sữa lên men"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 414,
+    "name": {
+      "en": "Baking Soda",
+      "vi": "Muối nở"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 415,
+    "name": {
+      "en": "Vanilla Extract",
+      "vi": "Tinh chất vani"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 416,
+    "name": {
+      "en": "Macaroni",
+      "vi": "Mì ống Elbow"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      70
+    ],
+    "isActive": true
+  },
+  {
+    "id": 417,
+    "name": {
+      "en": "Bread Crumbs",
+      "vi": "Vụn bánh mì Panko"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 418,
+    "name": {
+      "en": "Jalapeño",
+      "vi": "Ớt Jalapeño"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 419,
+    "name": {
+      "en": "Tortilla Chips",
+      "vi": "Bánh chip Tortilla"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      67
+    ],
+    "isActive": true
+  },
+  {
+    "id": 420,
+    "name": {
+      "en": "Garam Masala",
+      "vi": "Hỗn hợp gia vị Garam Masala"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 421,
+    "name": {
+      "en": "Curry Powder",
+      "vi": "Bột cà ri"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 422,
+    "name": {
+      "en": "Feta Cheese",
+      "vi": "Phô mai Feta"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 423,
+    "name": {
+      "en": "Kalamata Olives",
+      "vi": "Ô liu Kalamata"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 424,
+    "name": {
+      "en": "Red Wine Vinegar",
+      "vi": "Giấm rượu vang đỏ"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      72
+    ],
+    "isActive": true
+  },
+  {
+    "id": 425,
+    "name": {
+      "en": "Tahini",
+      "vi": "Sốt Tahini"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 426,
+    "name": {
+      "en": "Green Curry Paste",
+      "vi": "Sốt cà ri xanh"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 427,
+    "name": {
+      "en": "Bamboo Shoots",
+      "vi": "Măng tre"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 428,
+    "name": {
+      "en": "Kaffir Lime Leaves",
+      "vi": "Lá chanh"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 429,
+    "name": {
+      "en": "Thai Basil",
+      "vi": "Húng quế Thái"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 430,
+    "name": {
+      "en": "Shaoxing Wine",
+      "vi": "Rượu Shaoxing"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 431,
+    "name": {
+      "en": "Char Siu Pork",
+      "vi": "Thịt xá xíu"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      58
+    ],
+    "isActive": true
+  },
+  {
+    "id": 432,
+    "name": {
+      "en": "Green Peas",
+      "vi": "Đậu Hà Lan"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      61
+    ],
+    "isActive": true
+  },
+  {
+    "id": 433,
+    "name": {
+      "en": "Dark Soy Sauce",
+      "vi": "Nước tương đen"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      71
+    ],
+    "isActive": true
+  },
+  {
+    "id": 434,
+    "name": {
+      "en": "White Pepper",
+      "vi": "Tiêu trắng"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      60
+    ],
+    "isActive": true
+  },
+  {
+    "id": 435,
+    "name": {
+      "en": "Dark Chocolate",
+      "vi": "Sô-cô-la đen"
+    },
+    "description": null,
+    "unit": null,
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  }
+]

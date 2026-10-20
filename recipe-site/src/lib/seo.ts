@@ -1,6 +1,7 @@
 import type { Recipe } from "./api";
 import { pickLocale, splitInstructions } from "./i18n";
 import { resolveImageUrl } from "./image";
+import { formatAmount } from "./scale";
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3002";
@@ -16,12 +17,12 @@ export function recipeJsonLd(recipe: Recipe) {
   const title = pickLocale(recipe.title, undefined, "Recipe");
   const description = pickLocale(recipe.description);
   const steps = splitInstructions(recipe.instructions);
-  const image = resolveImageUrl(recipe.image);
+  const resolved = resolveImageUrl(recipe.image);
+  const image = resolved?.startsWith("/") ? `${SITE_URL}${resolved}` : resolved;
 
   const ingredients = (recipe.recipeIngredients ?? []).map((ri) => {
     const name = pickLocale(ri.ingredient?.name, undefined, "ingredient");
-    const unit = ri.ingredient?.unit ? ` ${ri.ingredient.unit}` : "";
-    return `${ri.quantity ?? ""}${unit} ${name}`.trim();
+    return `${formatAmount(ri.quantity ?? "", ri.ingredient?.unit)} ${name}`.trim();
   });
 
   const data: Record<string, unknown> = {

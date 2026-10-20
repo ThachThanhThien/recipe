@@ -1,24 +1,17 @@
 export function RecipeCardSkeleton() {
   return (
-    <div className="bg-card rounded-3xl overflow-hidden border border-border/40 animate-pulse">
-      <div className="aspect-[4/3] bg-secondary/60" />
-      <div className="p-5 space-y-3">
-        <div className="h-3 w-24 bg-secondary/60 rounded-full" />
-        <div className="h-5 w-3/4 bg-secondary/70 rounded" />
-        <div className="h-3 w-full bg-secondary/40 rounded" />
-        <div className="h-3 w-2/3 bg-secondary/40 rounded" />
-        <div className="pt-3 border-t border-border/40 flex justify-between">
-          <div className="h-3 w-12 bg-secondary/50 rounded-full" />
-          <div className="h-3 w-16 bg-secondary/50 rounded-full" />
-        </div>
-      </div>
+    <div className="animate-pulse" aria-hidden>
+      <div className="aspect-[4/3] rounded-2xl bg-muted" />
+      <div className="mt-3 h-3 w-1/3 rounded-full bg-muted" />
+      <div className="mt-2 h-4 w-4/5 rounded-full bg-muted" />
+      <div className="mt-2 h-3 w-1/2 rounded-full bg-muted" />
     </div>
   );
 }
 
-export function RecipeGridSkeleton({ count = 6 }: { count?: number }) {
+export function RecipeGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 sm:gap-x-5 lg:grid-cols-4">
       {Array.from({ length: count }).map((_, i) => (
         <RecipeCardSkeleton key={i} />
       ))}

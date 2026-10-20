@@ -1,64 +1,141 @@
-import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { ApiBaseService } from '../../../core/services/api-base.service';
+import { Injectable, inject } from '@angular/core';
+import { Observable, map, switchMap } from 'rxjs';
+import { GithubStore, findById, localize, nextId } from '../../../core/services/github-store.service';
+import { LanguageService } from '../../../core/services/language.service';
 import { RecipeModel } from '../models/recipe.model';
 
-export interface Paginated<T> {
-  items: T[];
-  total: number;
-  page: number;
-  limit: number;
-  totalPages: number;
-}
-
-export interface RecipeListQuery {
-  q?: string;
-  category?: string;
-  difficulty?: 'Easy' | 'Medium' | 'Hard';
-  tag?: string;
-  featured?: boolean;
-  trending?: boolean;
-  includeInactive?: boolean;
-  sort?: 'newest' | 'oldest' | 'rating' | 'popular' | 'fastest' | 'title';
-  page?: number;
-  limit?: number;
-}
+/** A recipe as stored in recipe-site/data/recipes.json (key order kept stable for clean diffs). */
+type StoredRecipe = Omit<RecipeModel, 'image' | 'prepTime' | 'cookTime' | 'difficulty' | 'category'> & {
+  image: string | null;
+  prepTime: string | null;
+  cookTime: string | null;
+  difficulty: RecipeModel['difficulty'] | null;
+  category: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 @Injectable({
   providedIn: 'root',
 })
-export class RecipeService extends ApiBaseService {
-  /** Backward-compatible: returns just the items array (uses a high limit). */
+export class RecipeService {
+  private store = inject(GithubStore);
+  private languageService = inject(LanguageService);
+
+  /** All recipes (active and inactive), newest first, with text in the portal's current language. */
   getAll(): Observable<RecipeModel[]> {
-    return this.getPage({ includeInactive: true, limit: 100 }).pipe(map((p) => p.items));
+    const lang = this.languageService.getLanguage();
+    return this.store.read<StoredRecipe>('recipes').pipe(
+      map((recipes) =>
+        recipes
+          .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+          .map((r) => ({
+            ...(r as unknown as RecipeModel),
+            title: localize(r.title, lang),
+            description: localize(r.description, lang),
+          })),
+      ),
+    );
   }
 
-  /** Full paginated/filtered response — preferred for tables with search & paging. */
-  getPage(query: RecipeListQuery = {}): Observable<Paginated<RecipeModel>> {
-    const params: Record<string, string> = {};
-    for (const [k, v] of Object.entries(query)) {
-      if (v !== undefined && v !== null && v !== '') params[k] = String(v);
-    }
-    return this.http.get<Paginated<RecipeModel>>(this.buildUrl('recipe'), { params });
-  }
-
-  getById(id: number) {
-    return this.http.get<RecipeModel>(this.buildUrl(`recipe/${id}`));
+  /** One recipe exactly as stored — every language — for the edit form. */
+  getById(id: number): Observable<RecipeModel> {
+    return this.store
+      .read<StoredRecipe>('recipes')
+      .pipe(map((recipes) => findById(recipes, id, 'Recipe') as unknown as RecipeModel));
   }
 
   create(payload: any) {
-    return this.http.post<RecipeModel>(this.buildUrl('recipe'), payload);
+    return this.checkIngredients(payload).pipe(
+      switchMap(() =>
+        this.store.write<StoredRecipe>(
+          'recipes',
+          (recipes) => {
+            const now = new Date().toISOString();
+            return [...recipes, toStored(payload, nextId(recipes), now, now)];
+          },
+          `Add recipe: ${localize(payload.title, 'en')}`,
+        ),
+      ),
+    );
   }
 
   update(id: number, payload: any) {
-    return this.http.put<RecipeModel>(this.buildUrl(`recipe/${id}`), payload);
+    return this.checkIngredients(payload).pipe(
+      switchMap(() =>
+        this.store.write<StoredRecipe>(
+          'recipes',
+          (recipes) => {
+            const existing = findById(recipes, id, 'Recipe');
+            const updated = toStored(payload, existing.id, existing.createdAt, new Date().toISOString());
+            return recipes.map((r) => (r.id === existing.id ? updated : r));
+          },
+          `Update recipe: ${localize(payload.title, 'en')}`,
+        ),
+      ),
+    );
   }
 
   toggleActive(id: number, isActive: boolean) {
-    return this.http.patch<RecipeModel>(this.buildUrl(`recipe/${id}/active`), { isActive });
+    return this.store.write<StoredRecipe>(
+      'recipes',
+      (recipes) => {
+        findById(recipes, id, 'Recipe');
+        const now = new Date().toISOString();
+        return recipes.map((r) => (r.id === Number(id) ? { ...r, isActive, updatedAt: now } : r));
+      },
+      `${isActive ? 'Show' : 'Hide'} recipe #${id}`,
+    );
   }
 
   delete(id: number) {
-    return this.http.delete(this.buildUrl(`recipe/${id}`));
+    return this.store.write<StoredRecipe>(
+      'recipes',
+      (recipes) => {
+        findById(recipes, id, 'Recipe');
+        return recipes.filter((r) => r.id !== Number(id));
+      },
+      `Delete recipe #${id}`,
+    );
   }
+
+  private checkIngredients(payload: any): Observable<void> {
+    const wanted: number[] = (payload.ingredients ?? []).map((i: any) => Number(i.ingredientId));
+    return this.store.read<{ id: number }>('ingredients').pipe(
+      map((ingredients) => {
+        const known = new Set(ingredients.map((i) => i.id));
+        if (wanted.some((id) => !known.has(id))) {
+          throw new Error('One or more ingredient IDs are invalid');
+        }
+      }),
+    );
+  }
+}
+
+function toStored(p: any, id: number, createdAt: string, updatedAt: string): StoredRecipe {
+  return {
+    id,
+    title: p.title,
+    description: p.description ?? null,
+    instructions: p.instructions ?? null,
+    image: p.image || null,
+    prepTime: p.prepTime || null,
+    cookTime: p.cookTime || null,
+    servings: p.servings ?? 1,
+    calories: p.calories ?? 0,
+    difficulty: p.difficulty || null,
+    category: p.category || null,
+    tags: p.tags ?? [],
+    rating: p.rating ?? 0,
+    reviews: p.reviews ?? 0,
+    isFeatured: !!p.isFeatured,
+    isTrending: !!p.isTrending,
+    isActive: p.isActive ?? true,
+    ingredients: (p.ingredients ?? []).map((i: any) => ({
+      ingredientId: Number(i.ingredientId),
+      quantity: String(i.quantity ?? ''),
+    })),
+    createdAt,
+    updatedAt,
+  };
 }

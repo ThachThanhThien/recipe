@@ -6,7 +6,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { MessageModule } from 'primeng/message';
 import { UploadService } from '../../../core/services/upload.service';
 
-const MAX_BYTES = 5 * 1024 * 1024;
+const MAX_BYTES = 25 * 1024 * 1024;
 const ALLOWED_MIME = ['image/jpeg', 'image/png', 'image/webp'];
 
 @Component({

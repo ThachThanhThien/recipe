@@ -87,7 +87,7 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
           name: data.name,
           description: data.description,
           unit: data.unit || '',
-          typeIds: data.types?.map((t: any) => t.id) || [],
+          typeIds: data.typeIds || [],
           isActive: data.isActive
         });
       },
@@ -112,7 +112,7 @@ export class IngredientDetail extends AppComponentBase implements OnChanges, OnI
 
     request$.subscribe({
       next: () => {
-        this.showSuccess('Success', 'Saved successfully');
+        this.showSuccess('Saved', 'The public site updates in about a minute.');
         this.onSaved.emit();
         this.resetForm();
       },

@@ -1,0 +1,242 @@
+[
+  {
+    "id": 56,
+    "name": {
+      "en": "Fruits",
+      "vi": "Trái cây"
+    },
+    "description": {
+      "en": "Sweet and tangy fruits",
+      "vi": "Trái cây ngọt ngào và tươi mới"
+    },
+    "isActive": true
+  },
+  {
+    "id": 57,
+    "name": {
+      "en": "Dairy",
+      "vi": "Sản phẩm từ sữa"
+    },
+    "description": {
+      "en": "Milk-based products",
+      "vi": "Các sản phẩm làm từ sữa"
+    },
+    "isActive": true
+  },
+  {
+    "id": 58,
+    "name": {
+      "en": "Meat",
+      "vi": "Thịt"
+    },
+    "description": {
+      "en": "Various types of meat",
+      "vi": "Các loại thịt động vật"
+    },
+    "isActive": true
+  },
+  {
+    "id": 59,
+    "name": {
+      "en": "Nuts & Seeds",
+      "vi": "Hạt & Các loại hạt"
+    },
+    "description": {
+      "en": "Nutritious nuts and seeds",
+      "vi": "Hạt dinh dưỡng và các loại đậu hạt"
+    },
+    "isActive": true
+  },
+  {
+    "id": 60,
+    "name": {
+      "en": "Spices",
+      "vi": "Gia vị"
+    },
+    "description": {
+      "en": "Seasonings and spices",
+      "vi": "Các loại gia vị tinh chế"
+    },
+    "isActive": true
+  },
+  {
+    "id": 61,
+    "name": {
+      "en": "Legumes",
+      "vi": "Họ Đậu"
+    },
+    "description": {
+      "en": "Beans and pulses",
+      "vi": "Các loại đậu và cây họ đậu"
+    },
+    "isActive": true
+  },
+  {
+    "id": 62,
+    "name": {
+      "en": "Seafood",
+      "vi": "Hải sản"
+    },
+    "description": {
+      "en": "Fish and shellfish",
+      "vi": "Cá và các loại động vật có vỏ"
+    },
+    "isActive": true
+  },
+  {
+    "id": 63,
+    "name": {
+      "en": "Oils & Fats",
+      "vi": "Dầu & Mỡ"
+    },
+    "description": {
+      "en": "Cooking oils and fats",
+      "vi": "Dầu ăn và mỡ thực vật/động vật"
+    },
+    "isActive": true
+  },
+  {
+    "id": 64,
+    "name": {
+      "en": "Grains",
+      "vi": "Ngũ cốc"
+    },
+    "description": {
+      "en": "Cereals and grains",
+      "vi": "Các loại ngũ cốc và hạt"
+    },
+    "isActive": true
+  },
+  {
+    "id": 65,
+    "name": {
+      "en": "Beverages",
+      "vi": "Đồ uống"
+    },
+    "description": {
+      "en": "Drinks and liquids",
+      "vi": "Các loại nước giải khát và đồ uống"
+    },
+    "isActive": true
+  },
+  {
+    "id": 66,
+    "name": {
+      "en": "Sweeteners",
+      "vi": "Chất tạo ngọt"
+    },
+    "description": {
+      "en": "Sugar and alternatives",
+      "vi": "Đường và các chất tạo ngọt thay thế"
+    },
+    "isActive": true
+  },
+  {
+    "id": 67,
+    "name": {
+      "en": "Bakery",
+      "vi": "Đồ nướng & Bánh mỳ"
+    },
+    "description": {
+      "en": "Breads and baked goods",
+      "vi": "Các loại bánh mỳ và đồ nướng"
+    },
+    "isActive": true
+  },
+  {
+    "id": 68,
+    "name": {
+      "en": "Roots & Tubers",
+      "vi": "Củ & Rễ"
+    },
+    "description": {
+      "en": "Starchy roots and tubers",
+      "vi": "Các loại củ chứa tinh bột"
+    },
+    "isActive": true
+  },
+  {
+    "id": 69,
+    "name": {
+      "en": "Mushrooms",
+      "vi": "Nấm"
+    },
+    "description": {
+      "en": "Edible fungi",
+      "vi": "Các loại nấm ăn được"
+    },
+    "isActive": true
+  },
+  {
+    "id": 70,
+    "name": {
+      "en": "Pasta",
+      "vi": "Mì Ý & Pasta"
+    },
+    "description": {
+      "en": "Various pasta shapes",
+      "vi": "Các loại mì Ý và pasta"
+    },
+    "isActive": true
+  },
+  {
+    "id": 71,
+    "name": {
+      "en": "Sauces",
+      "vi": "Nước xốt nấu ăn"
+    },
+    "description": {
+      "en": "Prepared sauces",
+      "vi": "Các loại nước xốt đã chế biến"
+    },
+    "isActive": true
+  },
+  {
+    "id": 72,
+    "name": {
+      "en": "Condiments",
+      "vi": "Gia vị bàn ăn"
+    },
+    "description": {
+      "en": "Table sauces and flavors",
+      "vi": "Nước xốt và gia vị dùng kèm"
+    },
+    "isActive": true
+  },
+  {
+    "id": 73,
+    "name": {
+      "en": "Eggs",
+      "vi": "Trứng"
+    },
+    "description": {
+      "en": "Poultry eggs",
+      "vi": "Trứng gia cầm"
+    },
+    "isActive": true
+  },
+  {
+    "id": 74,
+    "name": {
+      "en": "Herbs",
+      "vi": "Thảo mộc"
+    },
+    "description": {
+      "en": "Fresh and dried herbs",
+      "vi": "Thảo mộc tươi và khô"
+    },
+    "isActive": true
+  },
+  {
+    "id": 75,
+    "name": {
+      "en": "Vegetables",
+      "vi": "Rau củ"
+    },
+    "description": {
+      "en": "Fresh and nutritious vegetables",
+      "vi": "Rau củ tươi xanh và bổ dưỡng"
+    },
+    "isActive": true
+  }
+]

@@ -1,43 +1,49 @@
 "use client";
 
 import { useMemo } from "react";
-import { History } from "lucide-react";
 import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
-import { RecipeCard } from "@/components/recipe-card";
-import type { Recipe } from "@/lib/api";
+import { useFavorites } from "@/hooks/use-favorites";
+import { RecipeGrid } from "@/components/recipe-card";
+import { SectionHeader } from "@/components/ui";
+import { useT } from "@/components/lang-provider";
+import type { RecipeSummary } from "@/lib/api";
 
-interface RecentlyViewedRailProps {
-  allRecipes: Recipe[];
+const LIMIT = 4;
+
+function pick(ids: number[], all: RecipeSummary[]): RecipeSummary[] {
+  const byId = new Map(all.map((r) => [r.id, r]));
+  return ids
+    .map((id) => byId.get(id))
+    .filter((r): r is RecipeSummary => Boolean(r))
+    .slice(0, LIMIT);
 }
 
-export function RecentlyViewedRail({ allRecipes }: RecentlyViewedRailProps) {
+/** Last few recipes opened on this device. Hidden until there is something to show. */
+export function RecentlyViewedRail({ allRecipes }: { allRecipes: RecipeSummary[] }) {
+  const t = useT();
   const { ids, hydrated } = useRecentlyViewed();
-
-  const recipes = useMemo(() => {
-    if (!hydrated) return [];
-    const byId = new Map(allRecipes.map((r) => [r.id, r]));
-    return ids
-      .map((id) => byId.get(id))
-      .filter((r): r is Recipe => Boolean(r))
-      .slice(0, 4);
-  }, [ids, allRecipes, hydrated]);
-
-  if (!hydrated || recipes.length === 0) return null;
+  const recipes = useMemo(() => (hydrated ? pick(ids, allRecipes) : []), [ids, allRecipes, hydrated]);
+  if (recipes.length === 0) return null;
 
   return (
-    <section className="py-12 px-6 max-w-7xl mx-auto">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs">
-          <History size={14} />
-          Recently viewed
-        </div>
-        <div className="h-px flex-grow bg-border/40" />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {recipes.map((recipe, i) => (
-          <RecipeCard key={recipe.id} recipe={recipe} index={i} />
-        ))}
-      </div>
+    <section className="mt-10">
+      <SectionHeader title={t("home.recent")} />
+      <RecipeGrid recipes={recipes} />
+    </section>
+  );
+}
+
+/** A peek at saved recipes, linking to the full Saved page. */
+export function SavedRail({ allRecipes }: { allRecipes: RecipeSummary[] }) {
+  const t = useT();
+  const { favorites, hydrated } = useFavorites();
+  const recipes = useMemo(() => (hydrated ? pick(favorites, allRecipes) : []), [favorites, allRecipes, hydrated]);
+  if (recipes.length === 0) return null;
+
+  return (
+    <section className="mt-10">
+      <SectionHeader title={t("home.saved")} href="/favorites" linkLabel={t("home.seeAll")} />
+      <RecipeGrid recipes={recipes} />
     </section>
   );
 }
