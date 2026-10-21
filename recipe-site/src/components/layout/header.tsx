@@ -39,11 +39,13 @@ export function SiteHeader({ lang }: { lang: Lang }) {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex h-10 items-center gap-1.5 rounded-lg px-3 text-sm font-medium transition-colors",
+                  "flex h-10 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 text-sm font-medium transition-colors",
                   active ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
-                {t(item.label)}
+                {/* Five links only fit with the short tab-bar labels on tablets. */}
+                <span className="lg:hidden">{t(item.tabLabel)}</span>
+                <span className="hidden lg:inline">{t(item.label)}</span>
                 {count > 0 && (
                   <span className="min-w-5 rounded-full bg-primary px-1.5 text-center text-[11px] font-semibold leading-5 text-primary-foreground">
                     {count > 99 ? "99+" : count}
@@ -56,7 +58,7 @@ export function SiteHeader({ lang }: { lang: Lang }) {
 
         <div className="ml-auto flex items-center gap-1 sm:gap-2">
           {showSearch && (
-            <SearchField variant="compact" placeholder={t("nav.searchAria")} className="hidden w-60 lg:block" />
+            <SearchField variant="compact" placeholder={t("nav.searchAria")} className="hidden w-60 xl:block" />
           )}
           <LanguageSwitcher current={lang} />
           <ThemeToggle />

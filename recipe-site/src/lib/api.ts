@@ -1,12 +1,14 @@
 // Recipe data lives as JSON in `recipe-site/data/` (edited through recipe-portal,
 // which commits to GitHub). It is bundled at build time, so every page is
 // pre-rendered to static HTML — there is no API server to wait on.
+import type { CookIngredient, CookRecipe } from "./cook";
 import type { Multilingual } from "./i18n";
 import { DEFAULT_LANG } from "./lang";
 import { normalizeText } from "./search";
 import { totalMinutes } from "./time";
 import recipesJson from "../../data/recipes.json";
 import ingredientsJson from "../../data/ingredients.json";
+import ingredientTypesJson from "../../data/ingredient-types.json";
 
 export type Difficulty = "Easy" | "Medium" | "Hard";
 
@@ -68,6 +70,9 @@ interface StoredRecipe extends Omit<Recipe, "title" | "description" | "instructi
 const storedRecipes = recipesJson as unknown as StoredRecipe[];
 const ingredientsById = new Map(
   (ingredientsJson as unknown as StoredIngredient[]).map((i) => [i.id, i]),
+);
+const ingredientTypesById = new Map(
+  (ingredientTypesJson as unknown as { id: number; name: Multilingual | null }[]).map((t) => [t.id, t]),
 );
 
 interface FetchOptions {
@@ -175,4 +180,40 @@ export function categoriesOf(recipes: { category: string | null }[]): string[] {
 export async function getRecipe(id: number | string, opts: FetchOptions = {}): Promise<Recipe | null> {
   const stored = storedRecipes.find((r) => String(r.id) === String(id) && r.isActive !== false);
   return stored ? toRecipe(stored, opts.lang ?? DEFAULT_LANG) : null;
+}
+
+/** What the "What can I cook?" page needs: the ingredients recipes use, and each recipe's ingredient ids. */
+export async function getCookData(
+  opts: FetchOptions = {},
+): Promise<{ ingredients: CookIngredient[]; recipes: CookRecipe[] }> {
+  const lang = opts.lang ?? DEFAULT_LANG;
+  const recipes = await getRecipes(opts);
+  const uses = new Map<number, number>();
+  for (const r of recipes) {
+    for (const id of new Set(r.recipeIngredients.map((ri) => ri.ingredient.id))) uses.set(id, (uses.get(id) ?? 0) + 1);
+  }
+
+  const ingredients = [...ingredientsById.values()]
+    .filter((i) => i.isActive !== false && uses.has(i.id))
+    .map((i) => {
+      const name = localize(i.name, lang);
+      return {
+        id: i.id,
+        name,
+        typeName: localize(ingredientTypesById.get(i.typeIds[0])?.name, lang) || null,
+        unit: i.unit ?? "",
+        uses: uses.get(i.id) ?? 0,
+        searchName: normalizeText(name),
+        search: normalizeText(Object.values(i.name ?? {}).join(" ")),
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name, lang));
+
+  return {
+    ingredients,
+    recipes: recipes.map((r) => ({
+      ...toSummary(r),
+      ingredients: r.recipeIngredients.map((ri) => ({ id: ri.ingredient.id, quantity: ri.quantity })),
+    })),
+  };
 }

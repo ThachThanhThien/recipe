@@ -1,4 +1,4 @@
-import { Heart, House, Search, ShoppingBasket, type LucideIcon } from "lucide-react";
+import { CookingPot, Heart, House, Search, ShoppingBasket, type LucideIcon } from "lucide-react";
 import { SUPPORTED_LANGS } from "@/lib/lang";
 import type { TKey } from "@/lib/translations";
 
@@ -15,6 +15,7 @@ export interface NavItem {
 export const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "nav.home", tabLabel: "nav.home", icon: House },
   { href: "/recipes", label: "nav.recipes", tabLabel: "nav.search", icon: Search },
+  { href: "/cook", label: "nav.cook", tabLabel: "nav.cookTab", icon: CookingPot },
   { href: "/favorites", label: "nav.saved", tabLabel: "nav.saved", icon: Heart, badge: "saved" },
   { href: "/shopping-list", label: "nav.shoppingList", tabLabel: "nav.shopping", icon: ShoppingBasket, badge: "shopping" },
 ];
