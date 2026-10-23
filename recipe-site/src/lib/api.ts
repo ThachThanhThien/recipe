@@ -186,12 +186,19 @@ export async function getRecipe(id: number | string, opts: FetchOptions = {}): P
   return stored ? toRecipe(stored, opts.lang ?? DEFAULT_LANG) : null;
 }
 
-/** What the "What can I cook?" page needs: the ingredients recipes use, and each recipe's ingredient ids. */
+/** Drinks are recipes too, but not dishes for a meal. */
+const DRINK_CATEGORY = "Beverage";
+
+/**
+ * What the "What can I cook?" page needs: the ingredients dishes use, and each dish's
+ * ingredient ids. Drinks are left out — needing only a few basics, they would crowd
+ * the meal suggestions.
+ */
 export async function getCookData(
   opts: FetchOptions = {},
 ): Promise<{ ingredients: CookIngredient[]; recipes: CookRecipe[] }> {
   const lang = opts.lang ?? DEFAULT_LANG;
-  const recipes = await getRecipes(opts);
+  const recipes = (await getRecipes(opts)).filter((r) => r.category !== DRINK_CATEGORY);
   const uses = new Map<number, number>();
   for (const r of recipes) {
     for (const id of new Set(r.recipeIngredients.map((ri) => ri.ingredient.id))) uses.set(id, (uses.get(id) ?? 0) + 1);
