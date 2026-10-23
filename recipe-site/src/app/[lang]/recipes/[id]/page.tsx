@@ -10,7 +10,7 @@ import { RecipeBody } from "@/components/recipe-body";
 import { TrackView } from "@/components/track-view";
 import { Container, SectionHeader } from "@/components/ui";
 import { getRecipe, getRecipeSummaries } from "@/lib/api";
-import { pickLocale, splitInstructions } from "@/lib/i18n";
+import { pickLocale, splitInstructions, splitTips } from "@/lib/i18n";
 import { toLang, type Lang } from "@/lib/lang";
 import { t } from "@/lib/translations";
 import { formatMinutes, parseMinutes } from "@/lib/time";
@@ -65,6 +65,7 @@ export default async function RecipeDetailPage({ params }: DetailParams) {
   const title = pickLocale(recipe.title, lang, t(lang, "detail.fallbackTitle"));
   const description = pickLocale(recipe.description, lang);
   const steps = splitInstructions(recipe.instructions, lang);
+  const tips = splitTips(recipe.tips, lang);
   const ingredients = recipe.recipeIngredients.map((ri) => ({
     id: ri.id,
     name: pickLocale(ri.ingredient.name, lang),
@@ -83,6 +84,7 @@ export default async function RecipeDetailPage({ params }: DetailParams) {
       baseServings={recipe.servings}
       ingredients={ingredients}
       steps={steps}
+      tips={tips}
     >
       <script
         type="application/ld+json"

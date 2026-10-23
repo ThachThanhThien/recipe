@@ -19,6 +19,7 @@ interface RecipeSessionValue {
   /** Ingredients scaled to the chosen servings. */
   ingredients: IngredientLine[];
   steps: string[];
+  tips: string[];
 }
 
 const RecipeSessionContext = createContext<RecipeSessionValue | null>(null);
@@ -33,6 +34,7 @@ export function RecipeSession({
   baseServings,
   ingredients,
   steps,
+  tips,
   children,
 }: {
   recipeId: number;
@@ -40,6 +42,7 @@ export function RecipeSession({
   baseServings: number;
   ingredients: IngredientLine[];
   steps: string[];
+  tips: string[];
   children: ReactNode;
 }) {
   const base = Math.max(1, baseServings || 1);
@@ -51,7 +54,7 @@ export function RecipeSession({
 
   return (
     <RecipeSessionContext
-      value={{ recipeId, title, baseServings: base, servings, setServings, ingredients: scaled, steps }}
+      value={{ recipeId, title, baseServings: base, servings, setServings, ingredients: scaled, steps, tips }}
     >
       {children}
     </RecipeSessionContext>

@@ -15,6 +15,8 @@ export class RecipeModel {
   title: any;
   description: any;
   instructions: any;
+  /** `{ en, vi }`, one tip per line. */
+  tips: any;
   image: string;
   prepTime: string;
   cookTime: string;
@@ -35,6 +37,7 @@ export class RecipeModel {
     this.title = {};
     this.description = {};
     this.instructions = {};
+    this.tips = {};
     this.image = '';
     this.prepTime = '';
     this.cookTime = '';

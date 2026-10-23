@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type TouchEvent } from "react";
 import { createPortal } from "react-dom";
-import { Check, ChefHat, ChevronLeft, ChevronRight, ListChecks, Sun, X } from "lucide-react";
+import { Check, ChefHat, ChevronLeft, ChevronRight, Lightbulb, ListChecks, Sun, X } from "lucide-react";
 import { useRecipeSession } from "@/components/recipe-session";
 import { useT } from "@/components/lang-provider";
 import { buttonClass } from "@/components/ui";
@@ -45,13 +45,17 @@ export function StartCookingButton({ className }: { className?: string }) {
   );
 }
 
+type Panel = "ingredients" | "tips";
+
 /** Full-screen, one step at a time, big text, screen kept awake. */
 function CookingMode({ onClose }: { onClose: () => void }) {
   const t = useT();
   const titleId = useId();
-  const { title, steps, ingredients, servings } = useRecipeSession();
+  const { title, steps, ingredients, servings, tips } = useRecipeSession();
   const [index, setIndex] = useState(0);
-  const [showIngredients, setShowIngredients] = useState(false);
+  // One panel at a time, so the current step keeps most of a phone screen.
+  const [panel, setPanel] = useState<Panel | null>(null);
+  const togglePanel = (next: Panel) => setPanel((current) => (current === next ? null : next));
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const awake = useWakeLock(true);
 
@@ -115,13 +119,25 @@ function CookingMode({ onClose }: { onClose: () => void }) {
         {ingredients.length > 0 && (
           <button
             type="button"
-            onClick={() => setShowIngredients((v) => !v)}
-            aria-expanded={showIngredients}
-            aria-label={showIngredients ? t("cook.hideIngredients") : t("cook.showIngredients")}
-            className={cn(buttonClass("secondary"), "px-3", showIngredients && "bg-muted")}
+            onClick={() => togglePanel("ingredients")}
+            aria-expanded={panel === "ingredients"}
+            aria-label={panel === "ingredients" ? t("cook.hideIngredients") : t("cook.showIngredients")}
+            className={cn(buttonClass("secondary"), "px-3", panel === "ingredients" && "bg-muted")}
           >
             <ListChecks size={18} aria-hidden />
             <span className="hidden sm:inline">{t("cook.showIngredients")}</span>
+          </button>
+        )}
+        {tips.length > 0 && (
+          <button
+            type="button"
+            onClick={() => togglePanel("tips")}
+            aria-expanded={panel === "tips"}
+            aria-label={panel === "tips" ? t("cook.hideTips") : t("cook.showTips")}
+            className={cn(buttonClass("secondary"), "px-3", panel === "tips" && "bg-muted")}
+          >
+            <Lightbulb size={18} aria-hidden />
+            <span className="hidden sm:inline">{t("cook.showTips")}</span>
           </button>
         )}
         <button
@@ -142,7 +158,7 @@ function CookingMode({ onClose }: { onClose: () => void }) {
         />
       </div>
 
-      {showIngredients && (
+      {panel === "ingredients" && (
         <div className="max-h-[40dvh] overflow-y-auto border-b border-border bg-card px-4 py-2">
           <p className="py-1 text-xs font-medium text-muted-foreground">
             {t("detail.servings")}: {servings}
@@ -154,6 +170,23 @@ function CookingMode({ onClose }: { onClose: () => void }) {
                 <span className="shrink-0 font-semibold tabular-nums">
                   {formatAmount(ing.quantity, ing.unit)}
                 </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {panel === "tips" && (
+        <div className="max-h-[40dvh] overflow-y-auto border-b border-border bg-primary-soft px-4 py-3">
+          <p className="flex items-center gap-1.5 pb-1 text-xs font-medium text-primary-soft-foreground">
+            <Lightbulb size={14} aria-hidden />
+            {t("detail.tips")}
+          </p>
+          <ul className="space-y-2">
+            {tips.map((tip, i) => (
+              <li key={i} className="flex gap-3 leading-relaxed">
+                <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                <span>{tip}</span>
               </li>
             ))}
           </ul>

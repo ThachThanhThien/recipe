@@ -17,6 +17,14 @@
     type="editor"
   ></app-multilingual-input>
 
+  <app-multilingual-input
+    formControlName="tips"
+    label="Cooking tips"
+    type="textarea"
+    [rows]="4"
+    placeholder="One tip per line, e.g. Slice the beef while half-frozen for paper-thin cuts."
+  ></app-multilingual-input>
+
   <app-image-uploader formControlName="image" label="Thumbnail"></app-image-uploader>
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

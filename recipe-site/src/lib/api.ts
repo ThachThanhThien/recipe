@@ -31,6 +31,8 @@ export interface Recipe {
   title: Multilingual | string;
   description: Multilingual | string;
   instructions: Multilingual | string;
+  /** One tip per line. */
+  tips: Multilingual | string;
   image: string | null;
   prepTime: string | null;
   cookTime: string | null;
@@ -60,10 +62,11 @@ interface StoredIngredient {
 }
 
 /** Shape of an entry in data/recipes.json. */
-interface StoredRecipe extends Omit<Recipe, "title" | "description" | "instructions" | "recipeIngredients"> {
+interface StoredRecipe extends Omit<Recipe, "title" | "description" | "instructions" | "tips" | "recipeIngredients"> {
   title: Multilingual | null;
   description: Multilingual | null;
   instructions: Multilingual | null;
+  tips?: Multilingual | null;
   ingredients: { ingredientId: number; quantity: string }[];
 }
 
@@ -92,6 +95,7 @@ function toRecipe(stored: StoredRecipe, lang: string): Recipe {
     title: localize(stored.title, lang),
     description: localize(stored.description, lang),
     instructions: localize(stored.instructions, lang),
+    tips: localize(stored.tips, lang),
     recipeIngredients: ingredients.flatMap((item, index) => {
       const ingredient = ingredientsById.get(item.ingredientId);
       if (!ingredient) return [];

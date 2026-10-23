@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
+import { CookingTips } from "@/components/cooking-tips";
 import { IngredientList } from "@/components/ingredient-list";
 import { InstructionSteps } from "@/components/instruction-steps";
 import { useRecipeSession } from "@/components/recipe-session";
@@ -74,6 +75,7 @@ export function RecipeBody() {
       >
         <h2 className="mb-1 hidden text-xl font-semibold tracking-tight lg:block">{t("detail.steps")}</h2>
         <InstructionSteps />
+        <CookingTips className="mt-6" />
       </section>
     </div>
   );

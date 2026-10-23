@@ -5,7 +5,8 @@ import { LanguageService } from '../../../core/services/language.service';
 import { RecipeModel } from '../models/recipe.model';
 
 /** A recipe as stored in recipe-site/data/recipes.json (key order kept stable for clean diffs). */
-type StoredRecipe = Omit<RecipeModel, 'image' | 'prepTime' | 'cookTime' | 'difficulty' | 'category'> & {
+type StoredRecipe = Omit<RecipeModel, 'tips' | 'image' | 'prepTime' | 'cookTime' | 'difficulty' | 'category'> & {
+  tips: Record<string, string> | null;
   image: string | null;
   prepTime: string | null;
   cookTime: string | null;
@@ -118,6 +119,7 @@ function toStored(p: any, id: number, createdAt: string, updatedAt: string): Sto
     title: p.title,
     description: p.description ?? null,
     instructions: p.instructions ?? null,
+    tips: hasText(p.tips) ? p.tips : null,
     image: p.image || null,
     prepTime: p.prepTime || null,
     cookTime: p.cookTime || null,
@@ -138,4 +140,9 @@ function toStored(p: any, id: number, createdAt: string, updatedAt: string): Sto
     createdAt,
     updatedAt,
   };
+}
+
+/** True when any language of a `{ en, vi }` value has text. */
+function hasText(value: unknown): boolean {
+  return !!value && typeof value === 'object' && Object.values(value).some((v) => String(v ?? '').trim());
 }

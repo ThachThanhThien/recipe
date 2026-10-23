@@ -38,3 +38,16 @@ export function splitInstructions(value: Multilingual | string | null | undefine
     .map((s) => s.replace(/^(?:step\s*)?\d+\s*[.):\-]\s*/i, ""))
     .filter(Boolean);
 }
+
+/**
+ * Cooking tips are written one per line. Leading bullets ("-", "•", "*") or
+ * numbers are dropped — the UI draws its own.
+ */
+export function splitTips(value: Multilingual | string | null | undefined, lang?: string): string[] {
+  const text = pickLocale(value, lang);
+  if (!text) return [];
+  return text
+    .split(/\r?\n+/)
+    .map((s) => s.trim().replace(/^(?:[-•*]|\d+\s*[.)])\s*/, ""))
+    .filter(Boolean);
+}

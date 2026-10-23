@@ -92,6 +92,7 @@ const DICT = {
   "detail.saveAria": { en: "Save recipe", vi: "Lưu công thức" },
   "detail.unsaveAria": { en: "Remove from saved", vi: "Bỏ lưu công thức" },
   "detail.tags": { en: "Tags", vi: "Thẻ" },
+  "detail.tips": { en: "Cooking tips", vi: "Mẹo nấu ăn" },
   "detail.related": { en: "More like this", vi: "Món tương tự" },
   "detail.notFound": { en: "Recipe not found", vi: "Không tìm thấy công thức" },
   "detail.notFoundDesc": {
@@ -117,6 +118,8 @@ const DICT = {
   "cook.hint": { en: "Swipe or use ← → to move", vi: "Vuốt hoặc dùng ← → để chuyển bước" },
   "cook.showIngredients": { en: "Ingredients", vi: "Nguyên liệu" },
   "cook.hideIngredients": { en: "Hide ingredients", vi: "Ẩn nguyên liệu" },
+  "cook.showTips": { en: "Tips", vi: "Mẹo" },
+  "cook.hideTips": { en: "Hide tips", vi: "Ẩn mẹo" },
 
   // What can I cook?
   "planner.title": { en: "What can I cook?", vi: "Nấu được món gì?" },
