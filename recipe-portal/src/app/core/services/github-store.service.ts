@@ -135,7 +135,10 @@ export class GithubStore {
     // GitHub lets browsers cache this response for 60 s; a stale copy right after a
     // save would also carry a stale sha and make the next commit conflict.
     const url = `${this.repoUrl}/contents/${path}?ref=${this.cfg.branch}&t=${Date.now()}`;
-    return this.http.get<ContentsResponse>(url, { headers: this.headers() }).pipe(
+    // The "object" media type is the one documented to answer for files over 1 MB
+    // (recipes.json is) with an empty `content`, instead of refusing them.
+    const headers = this.headers().set('Accept', 'application/vnd.github.object+json');
+    return this.http.get<ContentsResponse>(url, { headers }).pipe(
       switchMap((res) =>
         res.encoding === 'base64' && res.content
           ? of({ text: decodeUtf8(res.content), sha: res.sha })
