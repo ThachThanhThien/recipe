@@ -10,13 +10,32 @@ export function hasImage(url: string | null | undefined): url is string {
   return !!url && url.trim().length > 0;
 }
 
+// Share links ("…/file/d/<id>/view", "…/open?id=<id>", "…/uc?id=<id>") open Drive's
+// viewer page, not the image itself.
+const DRIVE_LINK =
+  /^https?:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/([\w-]{10,})|(?:open|uc|thumbnail)\?(?:[^#]*&)?id=([\w-]{10,}))/i;
+
+/** Longest side requested from Google Drive; recipe-portal stores photos at this size. */
+const DRIVE_MAX_SIDE = 1600;
+
+/** The file id of a Google Drive share link, or null for any other URL. */
+export function driveFileId(url: string): string | null {
+  const match = url.match(DRIVE_LINK);
+  return match ? (match[1] ?? match[2]) : null;
+}
+
 /**
- * Absolute URLs pass through. Relative ones (e.g. `/uploads/pho.webp`, committed
- * by recipe-portal into `public/uploads/`) are served by this site itself.
+ * Absolute URLs pass through, except Google Drive share links (recipe-portal stores
+ * those after uploading to Drive), which become a direct image URL. Relative ones
+ * (e.g. `/uploads/pho.webp`, committed into `public/uploads/`) are served by this site.
  */
 export function resolveImageUrl(url: string | null | undefined): string | null {
   if (!hasImage(url)) return null;
   const trimmed = url.trim();
+  const driveId = driveFileId(trimmed);
+  // Drive's own `uc?export=view` links no longer embed reliably; this host serves the
+  // image of any file shared as "Anyone with the link". Keep it in this one place.
+  if (driveId) return `https://lh3.googleusercontent.com/d/${driveId}=w${DRIVE_MAX_SIDE}`;
   if (/^(https?:|data:|blob:)/i.test(trimmed)) return trimmed;
   return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
 }

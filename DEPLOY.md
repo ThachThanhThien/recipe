@@ -7,7 +7,7 @@ There is no server to run. Recipes live as JSON files in this repo, and everythi
 | `recipe-site/data/*.json` | this GitHub repo | The recipes, ingredients and ingredient types. Every edit is a commit, so you get history and undo for free. |
 | `recipe-site` (Next.js public site) | Vercel | Pre-renders every page (both languages) to static HTML at build time. Rebuilds on every push to `main`. |
 | `recipe-portal` (Angular admin) | GitHub Pages | Reads and commits the JSON files through the GitHub API, using a token you paste in once per browser. |
-| Recipe photos | `recipe-site/public/uploads/` | The portal shrinks each photo in the browser and commits it; the site serves it as `/uploads/<file>`. |
+| Recipe photos | Your Google Drive | The portal shrinks each photo in the browser, uploads it to a Drive folder and shares it as "Anyone with the link"; the site shows it straight from Google. Until Drive is set up (section 4), photos are committed to `recipe-site/public/uploads/` instead. |
 
 Saving in the portal takes ~1 second; the public site shows the change after Vercel's rebuild (~1 minute).
 
@@ -47,6 +47,31 @@ The repo it edits is set in `recipe-portal/src/environments/environment*.ts` (`o
 2. Open the portal → **Settings → GitHub connection** → paste the token → **Connect**.
 
 The token is stored only in that browser's `localStorage`. Without a token the portal shows only the connect page and can't change anything (the recipe data itself is public, like the repo and the site). Use **Disconnect this browser** on shared computers.
+
+## 4. Store recipe photos in Google Drive (once)
+
+The portal signs in to Google in the browser (no server, no secret) with the `drive.file` permission: it can only see the files it uploads, never the rest of your Drive.
+
+1. Open <https://console.cloud.google.com/> and create a project (e.g. "TastyFresh portal").
+2. **APIs & Services → Library** → search **Google Drive API** → **Enable**.
+3. **Google Auth Platform** (formerly "OAuth consent screen") → **Get started**: app name, your email, audience **External**. Under **Audience → Test users**, add the Google account(s) that will upload photos. (`drive.file` is a non-sensitive scope, so you can also **Publish app** without Google's verification.)
+4. **Clients → Create client** → type **Web application** → **Authorized JavaScript origins**:
+   - `https://thachthanhthien.github.io`
+   - `http://localhost:4200` (for running the portal locally)
+
+   No redirect URIs are needed. Copy the **Client ID** (`…apps.googleusercontent.com`).
+5. Paste it as `googleDrive.clientId` in **both** `recipe-portal/src/environments/environment.ts` and `environment.prod.ts`, then commit to `main` — Pages redeploys the portal. The client ID is public by design; it is not a secret.
+6. In the portal: **Settings → GitHub connection → Sign in with Google** (or just pick a photo in a recipe — it asks then). Google keeps the portal signed in for an hour at a time.
+
+What happens on upload: the photo goes into the folder **TastyFresh recipe photos** in your My Drive (created on first upload; rename it via `googleDrive.folderName`), is shared as *Anyone with the link → Viewer*, and the recipe stores its Drive link (`https://drive.google.com/file/d/<id>/view`). The site turns that link into Google's direct image URL (`https://lh3.googleusercontent.com/d/<id>=w1600`).
+
+**Already have photos in Drive?** In Drive: **Share → General access → Anyone with the link → Copy link**, then paste it into the recipe's "paste a Google Drive share link" box. Any other `https://` image link works too.
+
+Keep in mind:
+
+- Don't delete, move to trash or un-share the photos (or the folder) — the site would fall back to its placeholder.
+- Some Google Workspace (work/school) accounts forbid "Anyone with the link" sharing; use a personal Gmail account if uploads fail with a sharing error.
+- Google doesn't officially document the direct image URL. If it ever stops working, change it in one place — `resolveImageUrl` in `recipe-site/src/lib/image.ts` (and `driveImageUrl` in the portal's `google-drive.service.ts` for previews). The links stored in the recipes stay as they are.
 
 ---
 

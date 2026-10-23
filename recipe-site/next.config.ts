@@ -9,7 +9,8 @@ const viCookie = [{ type: "cookie" as const, key: "lang", value: "vi" }];
 
 const nextConfig: NextConfig = {
   images: {
-    // Recipe photos are either committed to public/uploads/ or linked from any https host.
+    // Recipe photos are either committed to public/uploads/ or linked from any https host
+    // (Google Drive photos are served from lh3.googleusercontent.com — see lib/image.ts).
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
   async rewrites() {

@@ -10,4 +10,11 @@ export const environment = {
     // Served by recipe-site at "/" — uploaded photos go to <publicDir>/uploads/.
     publicDir: 'recipe-site/public',
   },
+  // Recipe photos are uploaded to Google Drive and shared as "Anyone with the link"
+  // (setup: DEPLOY.md, section 4). The OAuth client id is public, not a secret.
+  // Leave it empty to commit photos to <publicDir>/uploads/ in the repo instead.
+  googleDrive: {
+    clientId: '',
+    folderName: 'TastyFresh recipe photos',
+  },
 };

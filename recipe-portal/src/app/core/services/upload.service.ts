@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpEventType } from '@angular/common/http';
-import { Observable, from, map, switchMap } from 'rxjs';
+import { HttpEventType, HttpProgressEvent } from '@angular/common/http';
+import { EMPTY, Observable, concatMap, from, map, of, switchMap } from 'rxjs';
 import { GithubStore } from './github-store.service';
+import { GoogleDrive, driveImageUrl, driveViewUrl } from './google-drive.service';
 
 export interface UploadResult {
   url: string;
@@ -20,38 +21,65 @@ const MAX_SIDE = 1600;
 @Injectable({ providedIn: 'root' })
 export class UploadService {
   private store = inject(GithubStore);
+  private drive = inject(GoogleDrive);
+
+  /** Where uploads go: Google Drive once it is set up (environment.googleDrive), else the repo. */
+  readonly destination: 'drive' | 'github' = this.drive.isConfigured ? 'drive' : 'github';
 
   /**
-   * Resizes the photo in the browser and commits it to the site's public/uploads/
-   * folder. The returned url (`/uploads/<file>`) is served by recipe-site.
+   * Resizes the photo in the browser, then uploads it. With Google Drive, the photo is
+   * shared as "Anyone with the link" and its Drive link is returned; otherwise it is
+   * committed to the site's public/uploads/ folder and served as `/uploads/<file>`.
    */
   uploadImage(file: File): Observable<UploadProgress> {
     return from(shrinkImage(file)).pipe(
-      switchMap(async (blob) => ({ blob, base64: await blobToBase64(blob) })),
-      switchMap(({ blob, base64 }) => {
+      switchMap((blob) => {
         const filename = `${Date.now().toString(36)}.${blob.type === 'image/webp' ? 'webp' : 'jpg'}`;
-        const url = `/uploads/${filename}`;
-        return this.store.uploadPublicFile(url, base64, `Add photo ${filename}`).pipe(
-          map((event): UploadProgress => {
-            if (event.type === HttpEventType.UploadProgress) {
-              const total = event.total ?? 0;
-              return { type: 'progress', progress: total > 0 ? Math.round((100 * event.loaded) / total) : 0 };
-            }
-            if (event.type === HttpEventType.Response) {
-              return { type: 'done', progress: 100, result: { url, filename } };
-            }
-            return { type: 'progress', progress: 0 };
-          }),
-        );
+        return this.destination === 'drive' ? this.toDrive(blob, filename) : this.toGithub(blob, filename);
       }),
     );
   }
 
+  /** A URL the browser can display: Drive links become direct image links, repo paths raw GitHub ones. */
   resolveUrl(url: string | null | undefined): string | null {
     if (!url) return null;
+    const drive = driveImageUrl(url);
+    if (drive) return drive;
     if (/^(https?:|data:|blob:)/i.test(url)) return url;
     return this.store.publicFileUrl(url);
   }
+
+  private toDrive(blob: Blob, filename: string): Observable<UploadProgress> {
+    return this.drive.upload(blob, filename).pipe(
+      concatMap((event) => {
+        if (event.type === HttpEventType.UploadProgress) return of(progressOf(event));
+        if (event.type !== HttpEventType.Response || !event.body) return EMPTY;
+        const { id } = event.body;
+        return this.drive
+          .shareWithAnyone(id)
+          .pipe(map((): UploadProgress => ({ type: 'done', progress: 100, result: { url: driveViewUrl(id), filename } })));
+      }),
+    );
+  }
+
+  private toGithub(blob: Blob, filename: string): Observable<UploadProgress> {
+    const url = `/uploads/${filename}`;
+    return from(blobToBase64(blob)).pipe(
+      switchMap((base64) => this.store.uploadPublicFile(url, base64, `Add photo ${filename}`)),
+      map((event): UploadProgress => {
+        if (event.type === HttpEventType.UploadProgress) return progressOf(event);
+        if (event.type === HttpEventType.Response) {
+          return { type: 'done', progress: 100, result: { url, filename } };
+        }
+        return { type: 'progress', progress: 0 };
+      }),
+    );
+  }
+}
+
+function progressOf(event: HttpProgressEvent): UploadProgress {
+  const total = event.total ?? 0;
+  return { type: 'progress', progress: total > 0 ? Math.round((100 * event.loaded) / total) : 0 };
 }
 
 async function shrinkImage(file: File): Promise<Blob> {
