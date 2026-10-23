@@ -4444,5 +4444,525 @@
       59
     ],
     "isActive": true
+  },
+  {
+    "id": 558,
+    "name": {
+      "en": "Black Tea Leaves",
+      "vi": "Trà đen"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 559,
+    "name": {
+      "en": "Green Tea Leaves",
+      "vi": "Trà xanh"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 560,
+    "name": {
+      "en": "Jasmine Tea Leaves",
+      "vi": "Trà lài"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 561,
+    "name": {
+      "en": "Earl Grey Tea",
+      "vi": "Trà bá tước Earl Grey"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 562,
+    "name": {
+      "en": "Thai Tea Leaves",
+      "vi": "Trà Thái"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 563,
+    "name": {
+      "en": "Matcha Powder",
+      "vi": "Bột trà xanh matcha"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 564,
+    "name": {
+      "en": "Dried Hibiscus",
+      "vi": "Hoa bụp giấm khô (atiso đỏ)"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 565,
+    "name": {
+      "en": "Dried Butterfly Pea Flowers",
+      "vi": "Hoa đậu biếc khô"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 566,
+    "name": {
+      "en": "Dried Chrysanthemum",
+      "vi": "Hoa cúc khô"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 567,
+    "name": {
+      "en": "Dried Artichoke",
+      "vi": "Bông atiso khô"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 568,
+    "name": {
+      "en": "Voi Leaves",
+      "vi": "Lá vối khô"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 569,
+    "name": {
+      "en": "Corn Silk",
+      "vi": "Râu bắp"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      74
+    ],
+    "isActive": true
+  },
+  {
+    "id": 570,
+    "name": {
+      "en": "Monk Fruit",
+      "vi": "Quả la hán"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 571,
+    "name": {
+      "en": "Kombucha Scoby",
+      "vi": "Con giống kombucha (scoby)"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 572,
+    "name": {
+      "en": "Sugarcane",
+      "vi": "Cây mía"
+    },
+    "description": null,
+    "unit": "stalk",
+    "typeIds": [
+      66
+    ],
+    "isActive": true
+  },
+  {
+    "id": 573,
+    "name": {
+      "en": "Passion Fruit",
+      "vi": "Chanh dây"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 574,
+    "name": {
+      "en": "Pennywort",
+      "vi": "Rau má"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      75
+    ],
+    "isActive": true
+  },
+  {
+    "id": 575,
+    "name": {
+      "en": "Soursop",
+      "vi": "Mãng cầu xiêm"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 576,
+    "name": {
+      "en": "Sapodilla",
+      "vi": "Hồng xiêm (sapôchê)"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 577,
+    "name": {
+      "en": "Jackfruit",
+      "vi": "Mít"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 578,
+    "name": {
+      "en": "Durian",
+      "vi": "Sầu riêng"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 579,
+    "name": {
+      "en": "Dragon Fruit",
+      "vi": "Thanh long"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 580,
+    "name": {
+      "en": "Ripe Papaya",
+      "vi": "Đu đủ chín"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 581,
+    "name": {
+      "en": "Guava",
+      "vi": "Ổi"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 582,
+    "name": {
+      "en": "Salted Dried Plums",
+      "vi": "Xí muội"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 583,
+    "name": {
+      "en": "Dracontomelon",
+      "vi": "Quả sấu"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 584,
+    "name": {
+      "en": "Ume Plums",
+      "vi": "Quả mơ"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 585,
+    "name": {
+      "en": "Pomegranate",
+      "vi": "Quả lựu"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      56
+    ],
+    "isActive": true
+  },
+  {
+    "id": 586,
+    "name": {
+      "en": "Beetroot",
+      "vi": "Củ dền"
+    },
+    "description": null,
+    "unit": "piece",
+    "typeIds": [
+      68
+    ],
+    "isActive": true
+  },
+  {
+    "id": 587,
+    "name": {
+      "en": "Basil Seeds",
+      "vi": "Hạt é"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 588,
+    "name": {
+      "en": "Lotus Seeds",
+      "vi": "Hạt sen"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      59
+    ],
+    "isActive": true
+  },
+  {
+    "id": 589,
+    "name": {
+      "en": "Brown Rice",
+      "vi": "Gạo lứt"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 590,
+    "name": {
+      "en": "Black Sticky Rice",
+      "vi": "Nếp cẩm"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 591,
+    "name": {
+      "en": "Malted Barley Powder",
+      "vi": "Bột mạch nha"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      64
+    ],
+    "isActive": true
+  },
+  {
+    "id": 592,
+    "name": {
+      "en": "Sparkling Water",
+      "vi": "Nước có ga (soda)"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 593,
+    "name": {
+      "en": "Coconut Cream",
+      "vi": "Kem dừa (nước cốt dừa đặc)"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 594,
+    "name": {
+      "en": "Evaporated Milk",
+      "vi": "Sữa cô đặc không đường"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 595,
+    "name": {
+      "en": "Vanilla Ice Cream",
+      "vi": "Kem vani"
+    },
+    "description": null,
+    "unit": "g",
+    "typeIds": [
+      57
+    ],
+    "isActive": true
+  },
+  {
+    "id": 596,
+    "name": {
+      "en": "Apple Juice",
+      "vi": "Nước ép táo"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
+  },
+  {
+    "id": 597,
+    "name": {
+      "en": "Grape Juice",
+      "vi": "Nước ép nho"
+    },
+    "description": null,
+    "unit": "ml",
+    "typeIds": [
+      65
+    ],
+    "isActive": true
   }
 ]
